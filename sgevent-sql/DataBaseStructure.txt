@@ -1,0 +1,19 @@
+CREATE DATABASE `eventmanagement`;
+
+CREATE TABLE `eventuser` (
+  `UserId` varchar(20) NOT NULL,
+  `UserName` varchar(45) DEFAULT NULL,
+  `Password` varchar(20) DEFAULT NULL,
+  `EmailAddress` varchar(30) DEFAULT NULL,
+  `ActiveStatus` tinyint DEFAULT NULL,
+  `RoleId` varchar(45) DEFAULT NULL,
+  `CreateTime` date DEFAULT NULL,
+  PRIMARY KEY (`UserId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `userrole` (
+  `RoleId` varchar(45) NOT NULL,
+  `RoleName` varchar(45) DEFAULT NULL,
+  `Permission` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`RoleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
