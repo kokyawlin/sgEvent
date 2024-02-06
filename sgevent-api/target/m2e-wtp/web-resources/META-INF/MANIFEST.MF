@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 17
+Implementation-Title: sgevent-api
+Implementation-Version: 0.0.1-SNAPSHOT
+Main-Class: com.nus.sgevent.EventApplication
+Created-By: Maven Integration for Eclipse
+
