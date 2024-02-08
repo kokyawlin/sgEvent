@@ -2,4 +2,3 @@ com\nus\sgevent\EventApplication.class
 com\nus\sgevent\EventUser.class
 com\nus\sgevent\MainController.class
 com\nus\sgevent\UserRepository.class
-com\nus\sgevent\UserRole.class

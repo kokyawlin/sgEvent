@@ -15,7 +15,6 @@
 	<description>SG Event API</description>
 	<properties>
 		<java.version>17</java.version>
-		  <start-class>com.nus.sgevent.EventApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -32,25 +31,21 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.33</version>
 		</dependency>
-		
 		<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-thymeleaf</artifactId>
-	</dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-	<!-- marked the embedded servlet container as provided -->
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-tomcat</artifactId>
-		<scope>provided</scope>
-	</dependency>
-	
 	</dependencies>
 
 	<build>
@@ -61,6 +56,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<packaging>war</packaging>
 
 </project>

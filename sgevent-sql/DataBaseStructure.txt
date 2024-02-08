@@ -1,19 +1,61 @@
-CREATE DATABASE `eventmanagement`;
+CREATE DATABASE IF NOT EXISTS EventHub;
+USE EventHub;
 
-CREATE TABLE `eventuser` (
-  `UserId` varchar(20) NOT NULL,
-  `UserName` varchar(45) DEFAULT NULL,
-  `Password` varchar(20) DEFAULT NULL,
-  `EmailAddress` varchar(30) DEFAULT NULL,
-  `ActiveStatus` tinyint DEFAULT NULL,
-  `RoleId` varchar(45) DEFAULT NULL,
-  `CreateTime` date DEFAULT NULL,
-  PRIMARY KEY (`UserId`)
+-- Roles table with an INT AUTO_INCREMENT primary key and a TEXT field for permissions
+CREATE TABLE IF NOT EXISTS Roles (
+    RoleID INT AUTO_INCREMENT PRIMARY KEY,
+    RoleName VARCHAR(45) NOT NULL, -- Unique role name
+    Permission TEXT, 
+    UNIQUE(RoleName)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `userrole` (
-  `RoleId` varchar(45) NOT NULL,
-  `RoleName` varchar(45) DEFAULT NULL,
-  `Permission` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`RoleId`)
+-- Users table with added RoleID to link to the Roles table for flexible role assignment
+CREATE TABLE IF NOT EXISTS Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    UserName VARCHAR(255) NOT NULL,
+    Password VARCHAR(255) NOT NULL, 
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    ActiveStatus TINYINT DEFAULT 1, -- Default to 1 (active). 0 could represent inactive
+    CreateDT DATE DEFAULT (CURDATE()), -- Auto set to current date for user creation time
+    RoleID INT, -- Foreign key to the Roles table
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID) 
+        ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- Events table to store event details with a foreign key linking to the Users table for event ownership
+CREATE TABLE IF NOT EXISTS Events (
+    EventID INT AUTO_INCREMENT PRIMARY KEY,
+    EventTitle VARCHAR(255) NOT NULL,
+    EventDesc TEXT,
+    EventStartDT DATETIME NOT NULL, 
+    EventEndDT DATETIME NOT NULL, 
+    EventOwnerID INT, -- Foreign key to the Users table to identify the event owner
+    FOREIGN KEY (EventOwnerID) REFERENCES Users(UserID) 
+        ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Registrations table for tracking user event registrations with status
+CREATE TABLE IF NOT EXISTS Registrations (
+    RegisterID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL, -- Foreign key to the Users table
+    EventID INT NOT NULL, -- Foreign key to the Events table
+    RegisterStatus ENUM('Registered', 'Cancelled') NOT NULL, 
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) 
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (EventID) REFERENCES Events(EventID) 
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Reviews table for storing user reviews of events with a rating system
+CREATE TABLE IF NOT EXISTS Reviews (
+    ReviewID INT AUTO_INCREMENT PRIMARY KEY,
+    EventID INT NOT NULL, -- Foreign key to the Events table
+    UserID INT NOT NULL, -- Foreign key to the Users table
+    Rating INT CHECK (Rating >= 1 AND Rating <= 5),
+    Comment TEXT, 
+    FOREIGN KEY (EventID) REFERENCES Events(EventID) 
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) 
+        ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
