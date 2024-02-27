@@ -27,7 +27,6 @@ public class UserRole {
 	public void setPermission(String permission) {
 		Permission = permission;
 	}
-
 	
 	
 }
