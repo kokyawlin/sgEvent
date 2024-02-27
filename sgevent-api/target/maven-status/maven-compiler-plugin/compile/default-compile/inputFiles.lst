@@ -1,5 +1,10 @@
-C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\UserRepository.java
-C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\UserRole.java
-C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\EventUser.java
-C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\MainController.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\entity\EventUser.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\UserController.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\entity\Notification.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\AuthenticationFilter.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\entity\Event.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\entity\EventReview.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\repository\UserRepository.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\entity\UserRole.java
+C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\entity\EventRegistration.java
 C:\MTECH_Exercises\sgevent-api\src\main\java\com\nus\sgevent\EventApplication.java
