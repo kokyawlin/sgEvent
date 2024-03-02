@@ -100,7 +100,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
           
         UserController UCtrl = new UserController();
         
-        if(UCtrl.checkUserLogin(username, password))
+        if(UCtrl.checkUserLogin(username, password).equals("success"))
         {
             String userRole = "ADMIN";
              
