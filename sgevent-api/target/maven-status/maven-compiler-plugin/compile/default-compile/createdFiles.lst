@@ -1,6 +1,5 @@
-com\nus\sgevent\entity\UserRole.class
 com\nus\sgevent\UserController.class
-com\nus\sgevent\EventApplication.class
-com\nus\sgevent\AuthenticationFilter.class
 com\nus\sgevent\entity\EventUser.class
 com\nus\sgevent\repository\UserRepository.class
+com\nus\sgevent\entity\UserRole.class
+com\nus\sgevent\AuthenticationFilter.class

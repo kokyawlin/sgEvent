@@ -13,7 +13,7 @@ public class EventUser {
 	private String Password;
 	private String EmailAddress;
 	private int ActiveStatus;
-	private String UserRole;
+	private int RoleId;
 	private Date CreateTime;
 	public String getUserId() {
 		return UserId;
@@ -45,16 +45,17 @@ public class EventUser {
 	public void setActiveStatus(int activeStatus) {
 		ActiveStatus = activeStatus;
 	}
-	public String getUserRole() {
-		return UserRole;
-	}
-	public void setUserRole(String userRole) {
-		UserRole = userRole;
-	}
+	
 	public Date getCreateTime() {
 		return CreateTime;
 	}
 	public void setCreateTime(Date createTime) {
 		CreateTime = createTime;
+	}
+	public int getRoleId() {
+		return RoleId;
+	}
+	public void setRoleId(int roleId) {
+		RoleId = roleId;
 	} 
 }
