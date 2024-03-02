@@ -55,10 +55,10 @@ public class UserController {
 		EventUser evuser=userRepository.SearchEventUser(userid);
 	return evuser;  
 	} 
-	
-	public boolean checkUserLogin(String username,String password)
+	@GetMapping(path="/UserLogin")
+	public boolean checkUserLogin(@PathVariable("userid") String userid,@PathVariable("password") String password)
 	{
-		if (userRepository.checkUserLogin(username, password).size()>0)
+		if (userRepository.checkUserLogin(userid, password).size()>0)
 		return true;
 		else
 		return false;
