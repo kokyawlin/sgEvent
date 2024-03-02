@@ -28,7 +28,6 @@ public class UserController {
 	@PostMapping(path="/add") // Map ONLY POST Requests
 	public @ResponseBody String addNewUser (@RequestParam String name
 			, @RequestParam String userid
-			, @RequestParam String userrole
 			, @RequestParam String password
 			, @RequestParam int activeflag
 			, @RequestParam String email) {
@@ -71,6 +70,7 @@ public class UserController {
 		
 	return UserFound;  
 	} 
+	
 	@GetMapping(path="/UserLogin")
 	public String checkUserLogin(@PathVariable("userid") String userid,@PathVariable("password") String password)
 	{
