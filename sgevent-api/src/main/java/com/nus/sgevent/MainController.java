@@ -2,16 +2,17 @@ package com.nus.sgevent;
 
 import java.util.Date;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import com.nus.sgevent.entity.*;
+
+import com.nus.sgevent.entity.EventUser;
+import com.nus.sgevent.repository.UserRepository;
 
 
 @Controller	// This means that this class is a Controller
@@ -35,7 +36,7 @@ public class MainController {
 		n.setUserId(userid);
 		n.setPassword(password);
 		n.setCreateTime(new Date());
-		n.setUserRole(userrole);
+		// n.setUserRole(userrole);
 		n.setUserName(name);
 		n.setEmailAddress(email);
 		userRepository.save(n);
