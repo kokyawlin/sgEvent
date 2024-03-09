@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import com.nus.sgevent.entity.*;
+
+import com.nus.sgevent.entity.EventUser;
 
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
@@ -18,7 +19,7 @@ public interface UserRepository extends CrudRepository<EventUser, Integer> {
 	@Query(value = "Update event_user.* from event_user where user_id=?1 and password=?2 ",nativeQuery = true)
 	boolean UpdateUser(String UserId,String Password, String UserName);
 	
-	@Query(value = "select event_user.* from event_user where user_id=?1",nativeQuery = true)
+	@Query(value = "select event_user.* from event_user where user_id=111",nativeQuery = true)
 	EventUser SearchEventUser(String UserId);
 	
 }
