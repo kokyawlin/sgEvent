@@ -17,9 +17,9 @@ public interface UserRepository extends CrudRepository<EventUser, Integer> {
 	List<EventUser> checkUserLogin(String UserId,String Password);
 	
 	@Query(value = "Update event_user.* from event_user where user_id=?1 and password=?2 ",nativeQuery = true)
-	boolean UpdateUser(String UserId,String Password, String UserName);
+	boolean UpdateUser(String UserId,String Password, String UserName, String EmailAddress);
 	
-	@Query(value = "select event_user.* from event_user where user_id=111",nativeQuery = true)
+	@Query(value = "select event_user.* from event_user where user_id=?1",nativeQuery = true)
 	EventUser SearchEventUser(String UserId);
 	
 }
