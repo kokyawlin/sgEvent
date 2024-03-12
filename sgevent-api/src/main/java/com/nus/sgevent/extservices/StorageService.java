@@ -3,7 +3,6 @@ package com.nus.sgevent.extservices;
 import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
-import org.springframework.data.jpa.domain.JpaSort.Path;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {

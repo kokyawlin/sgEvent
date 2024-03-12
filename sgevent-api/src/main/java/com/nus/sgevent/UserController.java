@@ -68,22 +68,22 @@ public class UserController {
 	public @ResponseBody String UpdateUser (@RequestParam String name
 			, @RequestParam String userid
 			, @RequestParam String password
-			, @RequestParam int activeflag
+			
 			, @RequestParam int userrole
 			, @RequestParam String email) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
-
-		EventUser n = new EventUser();
-		n.setUserId(userid);
-		n.setPassword(password);
-		n.setCreateTime(new Date());
-		n.setRoleId(1);
-		n.setUserName(name);
-		n.setEmailAddress(email);
-		userRepository.save(n);
 		
-		return "Saved";
+		boolean updatesuccess = userRepository.UpdateUser(userid, password, userid, email, userrole);
+	
+		if (updatesuccess)
+		return "Updated";
+		else
+			{
+					throw new ResponseStatusException(
+					  HttpStatus.NOT_MODIFIED, "Incorrect username or password"
+					);
+			}	
 	}
 
 	@GetMapping(path="/all")
