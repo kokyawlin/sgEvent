@@ -117,7 +117,17 @@ public class UserController {
 	public ResponseEntity<?> retrieveEventUser(@PathVariable("userid") String userid)   
 	{  
 		userObj UserFound = new userObj();
-		EventUser evuser=userRepository.SearchEventUser(userid);
+		EventUser evuser = null;
+		try
+		{
+		evuser=userRepository.SearchEventUser(userid);
+		}
+		catch(NullPointerException ex)
+		{
+			throw new ResponseStatusException(
+					  HttpStatus.NOT_FOUND, "User Not Found!"
+					);
+		}
 		UserFound.setUserName(evuser.getUserName());
 		UserFound.setActiveStatus(evuser.getActiveStatus());
 		UserFound.setCreateTime(evuser.getCreateTime());
