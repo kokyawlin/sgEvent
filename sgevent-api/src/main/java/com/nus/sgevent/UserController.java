@@ -1,6 +1,8 @@
 package com.nus.sgevent;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.entity.userObj;
-import com.nus.sgevent.extservices.MailService;
 import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
 
@@ -52,17 +53,6 @@ public class UserController {
 		return "Saved";
 	}
 	
-	@PostMapping(path="/sendmail") // Map ONLY POST Requests
-	public @ResponseBody String SendEmail (@RequestParam String body
-			, @RequestParam String subject
-			, @RequestParam String to)
-			{
-		MailService MSer = new MailService();
-		MSer.sendEmail(to, subject, body);
-		
-		return "Sent";
-			}
-	
 	
 	@PostMapping(path="/update") // Map ONLY POST Requests
 	public @ResponseBody String UpdateUser (@RequestParam String name
@@ -81,7 +71,7 @@ public class UserController {
 		else
 			{
 					throw new ResponseStatusException(
-					  HttpStatus.NOT_MODIFIED, "Incorrect username or password"
+					  HttpStatus.NOT_MODIFIED, "Update Error"
 					);
 			}	
 	}
@@ -90,6 +80,37 @@ public class UserController {
 	public @ResponseBody Iterable<EventUser> getAllUsers() {
 		// This returns a JSON or XML with the users
 		return userRepository.findAll();
+	}
+	
+	@GetMapping(path="/allwrole")
+	public @ResponseBody ResponseEntity<Object> getAllUsersWithRole() {
+		// This returns a JSON or XML with the users
+		
+		Iterable<EventUser> eventuserlist = userRepository.findAll();
+		List<userObj> entityList = new ArrayList<userObj>();
+		for (EventUser eU:eventuserlist)
+		{
+			userObj uO = new userObj();
+			uO.setUserId(eU.getUserId());
+			uO.setUserName(eU.getUserName());
+			uO.setPassword(eU.getPassword());
+			uO.setCreateTime(eU.getCreateTime());
+			uO.setActiveStatus(eU.getActiveStatus());
+			uO.setRoleId(eU.getRoleId());
+
+			UserRole evrole = roleRepository.SearchUserRole(eU.getRoleId());
+			uO.setRoleName(evrole.getRoleName());
+			uO.setPermission(evrole.getPermission());
+			entityList.add(uO);
+		}
+		
+		if (entityList.size()>0)
+		 return new ResponseEntity<Object>(entityList, HttpStatus.OK);
+		else
+			throw new ResponseStatusException(
+					  HttpStatus.NOT_FOUND, "No User Found"
+					);
+		
 	}
 	
 	@GetMapping("/{userid}")  
