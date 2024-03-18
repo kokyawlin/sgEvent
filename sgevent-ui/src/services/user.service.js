@@ -13,9 +13,15 @@ export const userApi = createApi({
         method: "GET",
       }),
     }),
+    getUserDetails: builder.query({
+      query: (userId) => ({
+        url: `/eventuser/${userId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 export const selectUser = (state) => state?.[userReducerName];
 
-export const { useGetUserListQuery } = userApi;
+export const { useGetUserListQuery, useGetUserDetailsQuery } = userApi;
