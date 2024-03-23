@@ -4,7 +4,7 @@ import { baseURL } from "../constants";
 export const roleReducerName = "roleApi";
 
 export const roleApi = createApi({
-  reducerPath: userReducerName,
+  reducerPath: roleReducerName,
   baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
   endpoints: (builder) => ({
     getRoleList: builder.query({
@@ -16,6 +16,6 @@ export const roleApi = createApi({
   }),
 });
 
-export const selectRole = (state) => state?.[userReducerName];
+export const selectRole = (state) => state?.[roleReducerName];
 
 export const { useGetRoleListQuery } = roleApi;
