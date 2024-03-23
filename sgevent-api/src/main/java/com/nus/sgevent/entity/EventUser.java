@@ -3,11 +3,14 @@ package com.nus.sgevent.entity;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class EventUser {
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String UserId;
 	private String UserName;
 	private String Password;
