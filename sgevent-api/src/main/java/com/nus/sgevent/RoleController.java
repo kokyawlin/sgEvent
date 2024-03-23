@@ -1,6 +1,7 @@
 package com.nus.sgevent;
 
-
+import com.nus.sgevent.entity.UserRole;
+import com.nus.sgevent.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,22 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nus.sgevent.entity.UserRole;
-import com.nus.sgevent.repository.RoleRepository;
-
-
-@Controller	// This means that this class is a Controller
-@RequestMapping(path="/v1/eventrole")
+@Controller // This means that this class is a Controller
+@RequestMapping(path = "/v1/eventrole")
 public class RoleController {
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@GetMapping(path="/all")
-	public @ResponseBody ResponseEntity<Object>  getAllRoles() {
-		// This returns a JSON or XML with the roles
-		Iterable<UserRole> roleList =  roleRepository.findAll();
-		return new ResponseEntity<Object>(roleList, HttpStatus.OK);
-	}
-	
-	
+
+  @Autowired
+  private RoleRepository roleRepository;
+
+  @GetMapping(path = "/all")
+  public @ResponseBody ResponseEntity<Object> getAllRoles() {
+    // This returns a JSON or XML with the roles
+    Iterable<UserRole> roleList = roleRepository.findAll();
+    return new ResponseEntity<Object>(roleList, HttpStatus.OK);
+  }
 }
