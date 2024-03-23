@@ -6,10 +6,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 import { useGetUserListQuery } from "../../services/user.service";
+import { navigate } from "gatsby";
 
 export default function BasicTable() {
   const { data, error, isLoading } = useGetUserListQuery();
+  const onEditClick = (userId) => {
+    navigate(`/users/edit?userId=${userId}`);
+  };
   console.log(data);
   return (
     <TableContainer component={Paper}>
@@ -21,6 +27,7 @@ export default function BasicTable() {
             <TableCell align="right">Status</TableCell>
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Role</TableCell>
+            <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -36,6 +43,17 @@ export default function BasicTable() {
               <TableCell align="right">{row.activeStatus}</TableCell>
               <TableCell align="right">{row.emailAddress}</TableCell>
               <TableCell align="right">{row.roleId}</TableCell>
+              <TableCell align="right">
+                <IconButton
+                  color="primary"
+                  aria-label="Edit User"
+                  onClick={() => {
+                    onEditClick(row.userId);
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
