@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,19 +56,14 @@ public class UserController {
 	
 	
 	@PostMapping(path="/update") // Map ONLY POST Requests
-	public @ResponseBody String UpdateUser (@RequestParam String name
-			, @RequestParam String userid
-			, @RequestParam String password
-			
-			, @RequestParam int userrole
-			, @RequestParam String email) {
+	public @ResponseBody ResponseEntity<Object> UpdateUser (@RequestBody EventUser user) {
 		// @ResponseBody means the returned String is the response, not a view name
-		// @RequestParam means it is a parameter from the GET or POST request
+		// @RequestBody means it is a payload from POST request
 		
-		boolean updatesuccess = userRepository.UpdateUser(userid, password, userid, email, userrole);
+		int updatestatus = userRepository.UpdateUser(user.getUserName(), user.getEmailAddress(), user.getRoleId(),user.getUserId());
 	
-		if (updatesuccess)
-		return "Updated";
+		if (updatestatus==1)
+		return ResponseEntity.status(HttpStatus.OK).body("update success");
 		else
 			{
 					throw new ResponseStatusException(
