@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.entity.userObj;
+import com.nus.sgevent.extservices.JwtUtil;
 import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
 
@@ -148,7 +149,7 @@ public class UserController {
 	public String checkUserLogin(@PathVariable("userid") String userid,@PathVariable("password") String password)
 	{
 		if (userRepository.checkUserLogin(userid, password).size()>0)
-		return "success";
+		return "success:" + JwtUtil.generateToken(userid);
 		else
 		{
 				throw new ResponseStatusException(
@@ -157,6 +158,5 @@ public class UserController {
 		}
 		
 	}
-	
 	
 }

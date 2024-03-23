@@ -28,8 +28,8 @@ public class NotificationController {
 	@Autowired
 	private NotificationRepository notiRepository;
 	
-	@PostMapping(path="/add") // Map ONLY POST Requests
-	public @ResponseBody String addNewUser (@RequestParam String event_id
+	@PostMapping(path="/create") // Map ONLY POST Requests
+	public @ResponseBody String addNewNotification(@RequestParam String event_id
 			, @RequestParam String userid
 			, @RequestParam String password
 			, @RequestParam int activeflag

@@ -13,5 +13,4 @@ public interface RoleRepository extends CrudRepository<UserRole, Integer> {
 
 	@Query(value = "SELECT user_role.* FROM user_role where role_id=?1",nativeQuery = true)
 	UserRole SearchUserRole(int RoleId);
-	
 }
