@@ -72,7 +72,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             {
             	UserController UCtrl = new UserController();
                 //Is user valid?
-                if(UCtrl.CheckUserName(username))
+                if(!UCtrl.CheckUserName(username))
                 {
                     requestContext.abortWith(ACCESS_DENIED);
                     return;
