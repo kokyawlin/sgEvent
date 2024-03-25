@@ -65,8 +65,8 @@ public class UserController {
 	
 	
 	@PostMapping(path="/chpassword") // Map ONLY POST Requests
-	public @ResponseBody String ChangePassword (@RequestParam String name
-			, @RequestParam String userid
+	public @ResponseBody String ChangePassword (
+			 @RequestParam String username
 			, @RequestParam String password
 			
 			, @RequestParam int userrole
@@ -74,7 +74,7 @@ public class UserController {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
 		
-		boolean updatesuccess = userRepository.UpdatePassword(userid, password);
+		boolean updatesuccess = userRepository.UpdatePassword(username, password);
 	
 		if (updatesuccess)
 		return "Updated";

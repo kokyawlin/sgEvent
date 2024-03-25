@@ -1,13 +1,7 @@
 package com.nus.sgevent;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
- 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -19,6 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import com.nus.sgevent.extservices.JwtUtil;
+
 
 @Provider
 public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter
