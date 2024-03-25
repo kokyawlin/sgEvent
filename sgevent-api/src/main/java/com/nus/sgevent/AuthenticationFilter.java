@@ -63,7 +63,6 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
               
             //Get encoded username
             final String tokenstring = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-              
             final String username = JwtUtil.extractUsername(tokenstring);
           
               

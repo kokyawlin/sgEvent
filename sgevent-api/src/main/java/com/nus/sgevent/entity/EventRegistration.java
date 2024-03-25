@@ -14,8 +14,8 @@ public class EventRegistration {
 	private String RegisterId;
 	private String UserId;
 	private Date RegisterDt;
-	private Date EventId;
-	private Date RegisterStatus;
+	private int EventId;
+	private String RegisterStatus;
 	public String getRegisterId() {
 		return RegisterId;
 	}
@@ -34,16 +34,16 @@ public class EventRegistration {
 	public void setRegisterDt(Date registerDt) {
 		RegisterDt = registerDt;
 	}
-	public Date getEventId() {
+	public int getEventId() {
 		return EventId;
 	}
-	public void setEventId(Date eventId) {
+	public void setEventId(int eventId) {
 		EventId = eventId;
 	}
-	public Date getRegisterStatus() {
+	public String getRegisterStatus() {
 		return RegisterStatus;
 	}
-	public void setRegisterStatus(Date registerStatus) {
+	public void setRegisterStatus(String registerStatus) {
 		RegisterStatus = registerStatus;
 	}
 	

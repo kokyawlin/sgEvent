@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.nus.sgevent.entity.Event;
+import com.nus.sgevent.entity.EventRegistration;
 import com.nus.sgevent.entity.EventUser;
+import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
 
 
@@ -21,9 +23,12 @@ import com.nus.sgevent.repository.EventRepository;
 @Controller	// This means that this class is a Controller
 @RequestMapping(path="/v1/event")
 public class EventController {
+	
 	@Autowired 
 	private EventRepository eventRepository;
-
+	
+	@Autowired 
+	private EventRegisterRepository eventregisterRepository;
 
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<Event> getAllEvents() {
@@ -63,7 +68,25 @@ public class EventController {
 			, @RequestParam String EventStatus
 			) {
 		
+		eventRepository.UpdateEvent(EventTitle, OwnerId, EventStatus);
+		
 		//eventRepository.save(n);
+		return "Updated";
+	}
+	
+	@PostMapping(path="/register") // Map ONLY POST Requests
+	public @ResponseBody String RegisterEvent (
+			@RequestParam String MemberId
+			, @RequestParam int EventId
+			) {
+		
+		EventRegistration EReg = new EventRegistration();
+		EReg.setEventId(EventId);
+		EReg.setRegisterDt(new Date());
+		EReg.setRegisterStatus("Registered");
+		EReg.setUserId(MemberId);
+		eventregisterRepository.save(EReg);
+		
 		return "Updated";
 	}
 	

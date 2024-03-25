@@ -31,16 +31,17 @@ public class NotificationController {
 	@PostMapping(path="/create") // Map ONLY POST Requests
 	public @ResponseBody String addNewNotification(@RequestParam String event_id
 			, @RequestParam String userid
-			, @RequestParam String password
-			, @RequestParam int activeflag
-			, @RequestParam String email) {
+			, @RequestParam String notimessage) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
 
-		Notification n = new Notification();
-		n.setUserId(userid);
+		Notification noti = new Notification();
+		noti.setUserId(userid);
+		noti.setEventId(event_id);
+		noti.setNotificationDt(new Date());
+		noti.setNotiMessage(notimessage);
 		
-		notiRepository.save(n);
+		notiRepository.save(noti);
 		return "Saved";
 	}
 	
