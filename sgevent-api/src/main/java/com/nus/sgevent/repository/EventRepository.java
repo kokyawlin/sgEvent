@@ -15,7 +15,7 @@ public interface EventRepository extends CrudRepository<Event, Integer> {
 	boolean UpdateEvent(String EventTitle,String OwnerId, String EventStatus);
 	
 
-	@Query(value = "select event.* from event where event_title=?1",nativeQuery = true)
-	EventUser SearchEventById(String event_title);
+	@Query(value = "select event.* from event where event_title like %?1%",nativeQuery = true)
+	Event SearchEventByTitle(String event_title);
 	
 }

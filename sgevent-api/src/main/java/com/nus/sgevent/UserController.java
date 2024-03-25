@@ -123,7 +123,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{username}")  
-	public ResponseEntity<?> retrieveEventUser(@PathVariable("emailaddress") String username)   
+	public ResponseEntity<?> retrieveEventUser(@PathVariable("username") String username)   
 	{  
 		userObj UserFound = new userObj();
 		EventUser evuser = null;
