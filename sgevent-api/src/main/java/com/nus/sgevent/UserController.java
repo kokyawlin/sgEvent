@@ -42,6 +42,15 @@ public class UserController {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
 
+		if (CheckUserExist(email))
+			
+		{
+			throw new ResponseStatusException(
+					  HttpStatus.NOT_ACCEPTABLE, "Email Already Exist"
+					);
+		}
+		else
+		{
 		EventUser n = new EventUser();
 		n.setUserId(userid);
 		n.setPassword(password);
@@ -50,7 +59,7 @@ public class UserController {
 		n.setUserName(name);
 		n.setEmailAddress(email);
 		userRepository.save(n);
-		
+		}
 		return "Saved";
 	}
 	
@@ -114,21 +123,15 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/{userid}")  
-	public ResponseEntity<?> retrieveEventUser(@PathVariable("userid") String userid)   
+	@GetMapping("/{username}")  
+	public ResponseEntity<?> retrieveEventUser(@PathVariable("emailaddress") String username)   
 	{  
 		userObj UserFound = new userObj();
 		EventUser evuser = null;
 		try
 		{
-		evuser=userRepository.SearchEventUser(userid);
-		}
-		catch(NullPointerException ex)
-		{
-			throw new ResponseStatusException(
-					  HttpStatus.NOT_FOUND, "User Not Found!"
-					);
-		}
+		evuser=userRepository.SearchEventUser(username);
+		
 		UserFound.setUserName(evuser.getUserName());
 		UserFound.setActiveStatus(evuser.getActiveStatus());
 		UserFound.setCreateTime(evuser.getCreateTime());
@@ -136,7 +139,13 @@ public class UserController {
 		UserFound.setPassword(evuser.getPassword());
 		UserFound.setRoleId(evuser.getRoleId());
 		UserFound.setUserId(evuser.getUserId());
-
+		}
+		catch(NullPointerException ex)
+		{
+			throw new ResponseStatusException(
+					  HttpStatus.NOT_FOUND, "User Not Found!"
+					);
+		}
 		UserRole evrole = roleRepository.SearchUserRole(evuser.getRoleId());
 		UserFound.setRoleName(evrole.getRoleName());
 		UserFound.setPermission(evrole.getPermission());
@@ -157,6 +166,46 @@ public class UserController {
 				);
 		}
 		
+	}
+	
+	public boolean CheckUserExist(String EmailAddress)
+	{
+		boolean found=false;
+		EventUser evuser = null;
+		try
+		{
+			evuser = userRepository.SearchEventUser(EmailAddress);
+			if (evuser!=null)
+			{
+				found=true;
+			}
+		}
+		catch (NullPointerException ex)
+		{
+			found = false;
+			
+		}
+		return found;
+	}
+	
+	public boolean CheckUserName (String UserName)
+	{
+		boolean found=false;
+		EventUser evuser = null;
+		try
+		{
+			evuser = userRepository.SearchEventUserName(UserName);
+			if (evuser!=null)
+			{
+				found=true;
+			}
+		}
+		catch (NullPointerException ex)
+		{
+			found = false;
+			
+		}
+		return found;
 	}
 	
 }
