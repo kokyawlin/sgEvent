@@ -3,6 +3,7 @@ package com.nus.sgevent;
 import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.entity.userObj;
+import com.nus.sgevent.extservices.JwtUtil;
 import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
 import java.util.ArrayList;
@@ -115,34 +116,34 @@ public class UserController {
     );
   }
 
-  @GetMapping("/{userid}")
+  @GetMapping("/{username}")
   public ResponseEntity<?> retrieveEventUser(
-    @PathVariable("userid") String userid
+    @PathVariable("username") String username
   ) {
     userObj UserFound = new userObj();
     EventUser evuser = null;
     try {
-      evuser = userRepository.SearchEventUser(userid);
+      evuser = userRepository.SearchEventUser(username);
+
+      UserFound.setUserName(evuser.getUserName());
+      UserFound.setActiveStatus(evuser.getActiveStatus());
+      UserFound.setCreateTime(evuser.getCreateTime());
+      UserFound.setEmailAddress(evuser.getEmailAddress());
+      UserFound.setPassword(evuser.getPassword());
+      UserFound.setRoleId(evuser.getRoleId());
+      UserFound.setUserId(evuser.getUserId());
     } catch (NullPointerException ex) {
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
         "User Not Found!"
       );
     }
-    UserFound.setUserName(evuser.getUserName());
-    UserFound.setActiveStatus(evuser.getActiveStatus());
-    UserFound.setCreateTime(evuser.getCreateTime());
-    UserFound.setEmailAddress(evuser.getEmailAddress());
-    UserFound.setPassword(evuser.getPassword());
-    UserFound.setRoleId(evuser.getRoleId());
-    UserFound.setUserId(evuser.getUserId());
 
     UserRole evrole = roleRepository.SearchUserRole(evuser.getRoleId());
     UserFound.setRoleName(evrole.getRoleName());
     UserFound.setPermission(evrole.getPermission());
     // return new ResponseEntity<>(UserFound, HttpStatus.OK);
     return ResponseEntity.ok(UserFound);
-    // return UserFound;
   }
 
   @GetMapping(path = "/UserLogin")
@@ -150,13 +151,61 @@ public class UserController {
     @PathVariable("userid") String userid,
     @PathVariable("password") String password
   ) {
-    if (
-      userRepository.checkUserLogin(userid, password).size() > 0
-    ) return "success"; else {
+    if (userRepository.checkUserLogin(userid, password).size() > 0) return (
+      "success:" + JwtUtil.generateToken(userid)
+    ); else {
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
         "Incorrect username or password"
       );
     }
+  }
+
+  @PostMapping(path = "/chpassword") // Map ONLY POST Requests
+  public @ResponseBody String ChangePassword(
+    @RequestParam String username,
+    @RequestParam String password,
+    @RequestParam int userrole,
+    @RequestParam String email
+  ) {
+    // @ResponseBody means the returned String is the response, not a view name
+    // @RequestParam means it is a parameter from the GET or POST request
+
+    boolean updatesuccess = userRepository.UpdatePassword(username, password);
+
+    if (updatesuccess) return "Updated"; else {
+      throw new ResponseStatusException(
+        HttpStatus.NOT_MODIFIED,
+        "Update Error"
+      );
+    }
+  }
+
+  public boolean CheckUserExist(String EmailAddress) {
+    boolean found = false;
+    EventUser evuser = null;
+    try {
+      evuser = userRepository.SearchEventUser(EmailAddress);
+      if (evuser != null) {
+        found = true;
+      }
+    } catch (NullPointerException ex) {
+      found = false;
+    }
+    return found;
+  }
+
+  public boolean CheckUserName(String UserName) {
+    boolean found = false;
+    EventUser evuser = null;
+    try {
+      evuser = userRepository.SearchEventUserName(UserName);
+      if (evuser != null) {
+        found = true;
+      }
+    } catch (NullPointerException ex) {
+      found = false;
+    }
+    return found;
   }
 }

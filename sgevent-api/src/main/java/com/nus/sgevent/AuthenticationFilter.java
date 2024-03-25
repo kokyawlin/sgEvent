@@ -1,12 +1,8 @@
 package com.nus.sgevent;
 
+import com.nus.sgevent.extservices.JwtUtil;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -58,60 +54,21 @@ public class AuthenticationFilter
         return;
       }
 
-      //Get encoded username and password
-      final String encodedUserPassword = authorization
+      //Get encoded username
+      final String tokenstring = authorization
         .get(0)
         .replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+      final String username = JwtUtil.extractUsername(tokenstring);
 
-      //Decode username and password
-      String usernameAndPassword = new String(
-        Base64.getDecoder().decode(encodedUserPassword.getBytes())
-      );
-      //Split username and password tokens
-      final StringTokenizer tokenizer = new StringTokenizer(
-        usernameAndPassword,
-        ":"
-      );
-
-      final String username = tokenizer.nextToken();
-      final String password = tokenizer.nextToken();
-      //Verifying Username and password
-      System.out.println(username);
-
-      System.out.println(password);
       //Verify user access
       if (method.isAnnotationPresent(RolesAllowed.class)) {
-        RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-        Set<String> rolesSet = new HashSet<String>(
-          Arrays.asList(rolesAnnotation.value())
-        );
-
+        UserController UCtrl = new UserController();
         //Is user valid?
-        if (!isUserAllowed(username, password, rolesSet)) {
+        if (!UCtrl.CheckUserName(username)) {
           requestContext.abortWith(ACCESS_DENIED);
           return;
         }
       }
     }
-  }
-
-  private boolean isUserAllowed(
-    final String username,
-    final String password,
-    final Set<String> rolesSet
-  ) {
-    boolean isAllowed = false;
-
-    UserController UCtrl = new UserController();
-
-    if (UCtrl.checkUserLogin(username, password).equals("success")) {
-      String userRole = "ADMIN";
-
-      //Step 2. Verify user role
-      if (rolesSet.contains(userRole)) {
-        isAllowed = true;
-      }
-    }
-    return isAllowed;
   }
 }
