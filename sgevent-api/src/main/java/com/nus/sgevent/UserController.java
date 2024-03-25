@@ -29,6 +29,7 @@ import com.nus.sgevent.repository.UserRepository;
 public class UserController {
 	@Autowired 
 	private UserRepository userRepository;
+	
 	@Autowired
 	private RoleRepository roleRepository;
 
@@ -63,8 +64,8 @@ public class UserController {
 	}
 	
 	
-	@PostMapping(path="/update") // Map ONLY POST Requests
-	public @ResponseBody String UpdateUser (@RequestParam String name
+	@PostMapping(path="/chpassword") // Map ONLY POST Requests
+	public @ResponseBody String ChangePassword (@RequestParam String name
 			, @RequestParam String userid
 			, @RequestParam String password
 			
@@ -73,7 +74,29 @@ public class UserController {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
 		
-		boolean updatesuccess = userRepository.UpdateUser(userid, password, userid, email, userrole);
+		boolean updatesuccess = userRepository.UpdatePassword(userid, password);
+	
+		if (updatesuccess)
+		return "Updated";
+		else
+			{
+					throw new ResponseStatusException(
+					  HttpStatus.NOT_MODIFIED, "Update Error"
+					);
+			}	
+	}
+	
+	@PostMapping(path="/update") // Map ONLY POST Requests
+	public @ResponseBody String UpdateUser (
+			  @RequestParam String username
+			, @RequestParam String password
+			
+			, @RequestParam int userrole
+			, @RequestParam String email) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		
+		boolean updatesuccess = userRepository.UpdateUser(username, password, email, userrole);
 	
 		if (updatesuccess)
 		return "Updated";
