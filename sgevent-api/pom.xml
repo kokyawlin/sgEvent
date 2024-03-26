@@ -23,11 +23,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter</artifactId>
     </dependency>
-    <!-- Spring Security -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
+ 
     <!-- JWT Library -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
