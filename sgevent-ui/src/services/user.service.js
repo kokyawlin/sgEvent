@@ -19,9 +19,20 @@ export const userApi = createApi({
         method: "GET",
       }),
     }),
+    updateUser: builder.mutation({
+      query: (payload) => ({
+        url: `/eventuser/update`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
 export const selectUser = (state) => state?.[userReducerName];
 
-export const { useGetUserListQuery, useGetUserDetailsQuery } = userApi;
+export const {
+  useGetUserListQuery,
+  useGetUserDetailsQuery,
+  useUpdateUserMutation,
+} = userApi;

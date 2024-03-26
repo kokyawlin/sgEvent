@@ -12,14 +12,16 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @EnableAutoConfiguration
 @SpringBootApplication
-public class SGEventApplication  extends SpringBootServletInitializer  {
+public class SGEventApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SGEventApplication.class, args);
-	}
-	
-	   @Override
-	    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-	        return builder.sources(SGEventApplication.class);
-	    }
+  public static void main(String[] args) {
+    SpringApplication.run(SGEventApplication.class, args);
+  }
+
+  @Override
+  protected SpringApplicationBuilder configure(
+    SpringApplicationBuilder builder
+  ) {
+    return builder.sources(SGEventApplication.class);
+  }
 }
