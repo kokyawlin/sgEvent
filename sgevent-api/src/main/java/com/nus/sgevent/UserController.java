@@ -1,6 +1,7 @@
 package com.nus.sgevent;
 
 import com.nus.sgevent.entity.EventUser;
+import com.nus.sgevent.entity.JsonResponse;
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.entity.userObj;
 import com.nus.sgevent.extservices.JwtUtil;
@@ -70,9 +71,11 @@ public class UserController {
       user.getUserId()
     );
 
-    if (updatestatus == 1) return ResponseEntity
-      .status(HttpStatus.OK)
-      .body("update success"); else {
+    if (updatestatus == 1) {
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(new JsonResponse(true, "Update user successful."));
+    } else {
       throw new ResponseStatusException(
         HttpStatus.NOT_MODIFIED,
         "Update Error"
