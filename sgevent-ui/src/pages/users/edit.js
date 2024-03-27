@@ -11,9 +11,9 @@ import { useGetRoleListQuery } from "../../services/role.service";
 
 export default function EditUser({ location }) {
   const params = new URLSearchParams(location.search);
-  const userId = params.get("userId");
+  const emailAddress = params.get("emailAddress");
   // console.log(userId);
-  const { data, error, isLoading } = useGetUserDetailsQuery(userId);
+  const { data, error, isLoading } = useGetUserDetailsQuery(emailAddress);
   const { data: roleList, isLoading: isRoleLoading } = useGetRoleListQuery();
   const [updateUser, result] = useUpdateUserMutation();
   console.log(data, roleList);
