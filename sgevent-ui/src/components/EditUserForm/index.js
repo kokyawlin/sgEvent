@@ -6,39 +6,40 @@ import { statusOptions } from "../../constants";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { navigate } from "gatsby";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 export default function EditUserForm({
   value,
   roleList,
   onSubmit,
   isUpdating,
+  isError,
 }) {
   const [user, setUser] = React.useState();
 
   React.useEffect(() => {
     setUser(value);
   }, [value]);
+
+
   return user ? (
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { m: 1, width: "50ch" },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
+    <Box>
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField disabled id="user-id" label="User Id" value={user.userId} />
-      </div>
-      <div>
+      </FormControl>
+
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="user-email"
           label="Email Address"
           disabled
           value={user.emailAddress}
         />
-      </div>
-      <div>
+      </FormControl>
+
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="outlined-select-status"
           select
@@ -46,7 +47,10 @@ export default function EditUserForm({
           value={user.activeStatus}
           helperText="Please select account status"
           onChange={(event) => {
-            setUser((prev) => ({ ...prev, activeStatus: event.target.value }));
+            setUser((prev) => ({
+              ...prev,
+              activeStatus: event.target.value,
+            }));
           }}
         >
           {statusOptions.map((option) => (
@@ -55,8 +59,9 @@ export default function EditUserForm({
             </MenuItem>
           ))}
         </TextField>
-      </div>
-      <div>
+      </FormControl>
+
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="outlined-select-role"
           select
@@ -73,13 +78,20 @@ export default function EditUserForm({
             </MenuItem>
           ))}
         </TextField>
-      </div>
+      </FormControl>
+
       <br />
-      <Box sx={{ width: "50ch" }}>
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
+        {isError ? (
+          <FormLabel error id="error-update-user">
+            Something went wrong while updating user, Please try again later.
+          </FormLabel>
+        ) : null}
         <Stack spacing={2} direction="row">
           <LoadingButton
             fullWidth
             variant="contained"
+            type="submit"
             loadingPosition="end"
             loading={isUpdating}
             onClick={() => {
@@ -88,11 +100,17 @@ export default function EditUserForm({
           >
             Submit
           </LoadingButton>
-          <Button fullWidth variant="outlined">
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => {
+              navigate("/users");
+            }}
+          >
             Back
           </Button>
         </Stack>
-      </Box>
+      </FormControl>
     </Box>
   ) : null;
 }

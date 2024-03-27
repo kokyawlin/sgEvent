@@ -13,10 +13,9 @@ import { navigate } from "gatsby";
 
 export default function BasicTable() {
   const { data, error, isLoading } = useGetUserListQuery();
-  const onEditClick = (userId) => {
-    navigate(`/users/edit?userId=${userId}`);
+  const onEditClick = (emailAddress) => {
+    navigate(`/users/edit?emailAddress=${emailAddress}`);
   };
-  console.log(data);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -48,7 +47,7 @@ export default function BasicTable() {
                   color="primary"
                   aria-label="Edit User"
                   onClick={() => {
-                    onEditClick(row.userId);
+                    onEditClick(row.emailAddress);
                   }}
                 >
                   <EditIcon />
