@@ -1,5 +1,5 @@
 package com.nus.sgevent.repository;
-
+import java.util.UUID;
 import com.nus.sgevent.entity.EventRegistration;
 import com.nus.sgevent.entity.EventUser;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 // CRUD refers Create, Read, Update, Delete
 
 public interface EventRegisterRepository
-  extends CrudRepository<EventRegistration, String> {
+  extends CrudRepository<EventRegistration, UUID> {
   @Query(
     value = "select event_registration.* from event_registration where event_id=?1",
     nativeQuery = true
