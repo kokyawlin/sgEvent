@@ -6,6 +6,7 @@ export const userReducerName = "userApi";
 export const userApi = createApi({
   reducerPath: userReducerName,
   baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getUserList: builder.query({
       query: () => ({
@@ -26,6 +27,19 @@ export const userApi = createApi({
         body: payload,
       }),
     }),
+    addUser: builder.mutation({
+      query: (payload) => ({
+        url: `/eventuser/add`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `/eventuser/delete/${userId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -35,4 +49,6 @@ export const {
   useGetUserListQuery,
   useGetUserDetailsQuery,
   useUpdateUserMutation,
+  useAddUserMutation,
+  useDeleteUserMutation,
 } = userApi;

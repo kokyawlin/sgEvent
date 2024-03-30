@@ -2,37 +2,31 @@ import React, { useEffect } from "react";
 import Layout from "../../components/Layout";
 import AdminPageLayout from "../../components/AdminPageLayout";
 import EditUserForm from "../../components/EditUserForm";
-import {
-  useGetUserDetailsQuery,
-  useUpdateUserMutation,
-} from "../../services/user.service";
+import { useAddUserMutation } from "../../services/user.service";
 import { useGetRoleListQuery } from "../../services/role.service";
 import { navigate } from "gatsby";
 
 export default function EditUser({ location }) {
   const params = new URLSearchParams(location.search);
-  const emailAddress = params.get("emailAddress");
 
-  const { data, error, isLoading } = useGetUserDetailsQuery(emailAddress);
   const { data: roleList, isLoading: isRoleLoading } = useGetRoleListQuery();
-  const [updateUser, result] = useUpdateUserMutation();
-  console.log(data, roleList);
+  const [addUser, result] = useAddUserMutation();
 
   useEffect(() => {
     if (result.isSuccess) navigate("/users");
   }, [result.isSuccess]);
 
-  const onUpdateUser = (user) => {
-    updateUser(user);
+  const onAddUser = (user) => {
+    addUser(user);
   };
   return (
-    <Layout isLoading={isLoading || isRoleLoading}>
-      <AdminPageLayout title="Edit User">
+    <Layout isLoading={isRoleLoading}>
+      <AdminPageLayout title="Add New User">
         <EditUserForm
-          isEdit
-          value={data}
+          isEdit={false}
+          value={{}}
           roleList={roleList}
-          onSubmit={onUpdateUser}
+          onSubmit={onAddUser}
           isUpdating={result.isLoading}
           isError={result.isError}
         />

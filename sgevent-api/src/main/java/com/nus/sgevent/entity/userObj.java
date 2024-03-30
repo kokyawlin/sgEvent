@@ -1,9 +1,10 @@
 package com.nus.sgevent.entity;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class userObj {
-	private String UserId;
+	private UUID UserId;
 	private String UserName;
 	private String Password;
 	private String EmailAddress;
@@ -12,10 +13,10 @@ public class userObj {
 	private Date CreateTime;
 	private String RoleName;
 	private String Permission;
-	public String getUserId() {
+	public UUID getUserId() {
 		return UserId;
 	}
-	public void setUserId(String userId) {
+	public void setUserId(UUID userId) {
 		UserId = userId;
 	}
 	public String getUserName() {

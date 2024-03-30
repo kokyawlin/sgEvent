@@ -16,6 +16,7 @@ export default function EditUserForm({
   onSubmit,
   isUpdating,
   isError,
+  isEdit,
 }) {
   const [user, setUser] = React.useState();
 
@@ -23,19 +24,45 @@ export default function EditUserForm({
     setUser(value);
   }, [value]);
 
-
   return user ? (
     <Box>
-      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
-        <TextField disabled id="user-id" label="User Id" value={user.userId} />
-      </FormControl>
+      {isEdit ? (
+        <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
+          <TextField
+            disabled
+            id="user-id"
+            label="User Id"
+            value={user.userId}
+          />
+        </FormControl>
+      ) : null}
 
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="user-email"
           label="Email Address"
-          disabled
+          disabled={isEdit}
           value={user.emailAddress}
+          onChange={(event) => {
+            setUser((prev) => ({
+              ...prev,
+              emailAddress: event.target.value,
+            }));
+          }}
+        />
+      </FormControl>
+
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
+        <TextField
+          id="user-name"
+          label="Name"
+          value={user.userName}
+          onChange={(event) => {
+            setUser((prev) => ({
+              ...prev,
+              userName: event.target.value,
+            }));
+          }}
         />
       </FormControl>
 
@@ -84,7 +111,8 @@ export default function EditUserForm({
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         {isError ? (
           <FormLabel error id="error-update-user">
-            Something went wrong while updating user, Please try again later.
+            Something went wrong while adding/updating user, Please try again
+            later.
           </FormLabel>
         ) : null}
         <Stack spacing={2} direction="row">
