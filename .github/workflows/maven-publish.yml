@@ -6,6 +6,8 @@ name: Maven Package
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -27,9 +29,11 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build with Maven
+      working-directory: sgevent-api
       run: mvn -B package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+      working-directory: sgevent-api
       env:
         GITHUB_TOKEN: ${{ github.token }}
