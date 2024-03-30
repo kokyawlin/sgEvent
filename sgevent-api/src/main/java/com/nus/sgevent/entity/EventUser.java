@@ -7,15 +7,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "event_user")
 public class EventUser {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "user_id")
-  private String UserId;
+  private UUID UserId;
 
   @Column(name = "user_name")
   private String UserName;
@@ -35,11 +36,11 @@ public class EventUser {
   @Column(name = "create_time")
   private Date CreateTime;
 
-  public String getUserId() {
+  public UUID getUserId() {
     return UserId;
   }
 
-  public void setUserId(String userId) {
+  public void setUserId(UUID userId) {
     UserId = userId;
   }
 

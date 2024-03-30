@@ -10,10 +10,13 @@ import com.nus.sgevent.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,26 +38,29 @@ public class UserController {
   private RoleRepository roleRepository;
 
   @PostMapping(path = "/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser(
-    @RequestParam String name,
-    @RequestParam String userid,
-    @RequestParam String password,
-    @RequestParam int activeflag,
-    @RequestParam String email
+  public @ResponseBody ResponseEntity<Object> addNewUser(
+    @RequestBody EventUser user
   ) {
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
 
-    EventUser n = new EventUser();
-    n.setUserId(userid);
-    n.setPassword(password);
-    n.setCreateTime(new Date());
-    n.setRoleId(1);
-    n.setUserName(name);
-    n.setEmailAddress(email);
-    userRepository.save(n);
+    user.setCreateTime(new Date());
 
-    return "Saved";
+    userRepository.save(user);
+
+	return ResponseEntity.ok(new JsonResponse(true, "Add user successful."));
+  }
+
+  @DeleteMapping(path = "/delete/{id}") // Map ONLY DELETE Requests
+  public @ResponseBody ResponseEntity<Object> deleteUser(
+    @PathVariable("id") UUID id
+  ) {
+    // @ResponseBody means the returned String is the response, not a view name
+    // @RequestParam means it is a parameter from the GET or POST request
+
+    userRepository.deleteById(id);
+
+	return ResponseEntity.ok(new JsonResponse(true, "Delete user successful."));
   }
 
   @PostMapping(path = "/update") // Map ONLY POST Requests
@@ -151,11 +157,11 @@ public class UserController {
 
   @GetMapping(path = "/UserLogin")
   public String checkUserLogin(
-    @PathVariable("userid") String userid,
+    @PathVariable("emailaddress") String emailaddress,
     @PathVariable("password") String password
   ) {
-    if (userRepository.checkUserLogin(userid, password).size() > 0) return (
-      "success:" + JwtUtil.generateToken(userid)
+    if (userRepository.checkUserLogin(emailaddress, password).size() > 0) return (
+      "success:" + JwtUtil.generateToken(emailaddress)
     ); else {
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
