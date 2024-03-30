@@ -1,4 +1,4 @@
-package com.nus.sgevent;
+package com.nus.sgevent.controller;
 
 import com.nus.sgevent.extservices.MailService;
 import org.springframework.stereotype.Controller;

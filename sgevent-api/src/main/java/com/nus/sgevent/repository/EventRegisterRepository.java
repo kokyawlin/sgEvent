@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 // CRUD refers Create, Read, Update, Delete
 
 public interface EventRegisterRepository
-  extends CrudRepository<EventRegistration, Integer> {
+  extends CrudRepository<EventRegistration, String> {
   @Query(
     value = "select event_registration.* from event_registration where event_id=?1",
     nativeQuery = true

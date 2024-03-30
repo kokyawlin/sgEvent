@@ -10,10 +10,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { authSelector } from "../../state/auth/slice";
 import { useSelector } from "react-redux";
+import useLogout from "../../pages/logout";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { userInfo } = useSelector((state) => authSelector(state));
+  
+  const logout = useLogout();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,7 +40,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Welcome, {userInfo.firstname}
+            Welcome {userInfo.user_name}
           </Typography>
 
           <div>
@@ -68,6 +71,10 @@ export default function Header() {
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={() => {
+                handleClose();
+                logout(); // 调用logout函数
+              }}>Log out</MenuItem>
             </Menu>
           </div>
         </Toolbar>

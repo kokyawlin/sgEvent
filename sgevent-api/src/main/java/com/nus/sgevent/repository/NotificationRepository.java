@@ -2,6 +2,8 @@ package com.nus.sgevent.repository;
 
 import com.nus.sgevent.entity.Notification;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 // CRUD refers Create, Read, Update, Delete
 
 public interface NotificationRepository
-  extends CrudRepository<Notification, Integer> {
+  extends CrudRepository<Notification, UUID> {
   @Query(
     value = "select notification.* from notification where notification_id=?1 and event_id=?2 ",
     nativeQuery = true

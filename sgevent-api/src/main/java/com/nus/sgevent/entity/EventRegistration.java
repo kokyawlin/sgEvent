@@ -1,53 +1,28 @@
 package com.nus.sgevent.entity;
 
 import java.util.Date;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.UUID;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
+@Table(name = "event_registration")
+@Data
+@NoArgsConstructor
 public class EventRegistration {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String RegisterId;
-	private String UserId;
-	private Date RegisterDt;
-	private int EventId;
-	private String RegisterStatus;
-	public String getRegisterId() {
-		return RegisterId;
-	}
-	public void setRegisterId(String registerId) {
-		RegisterId = registerId;
-	}
-	public String getUserId() {
-		return UserId;
-	}
-	public void setUserId(String userId) {
-		UserId = userId;
-	}
-	public Date getRegisterDt() {
-		return RegisterDt;
-	}
-	public void setRegisterDt(Date registerDt) {
-		RegisterDt = registerDt;
-	}
-	public int getEventId() {
-		return EventId;
-	}
-	public void setEventId(int eventId) {
-		EventId = eventId;
-	}
-	public String getRegisterStatus() {
-		return RegisterStatus;
-	}
-	public void setRegisterStatus(String registerStatus) {
-		RegisterStatus = registerStatus;
-	}
-	
-	
-	
-	
+    @Id
+    private UUID registerId = UUID.randomUUID(); // 直接在字段声明时生成UUID值
+
+    private UUID userId; // 假设UserId也是UUID类型
+
+    private Date registerDt;
+
+    private UUID eventId; // 假设EventId也是UUID类型
+
+    private String registerStatus;
+
+    // Lombok @Data注解自动为所有字段生成getter和setter方法
 }

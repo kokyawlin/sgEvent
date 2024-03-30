@@ -2,48 +2,21 @@ package com.nus.sgevent.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.UUID;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
+@Data
+@NoArgsConstructor
 public class EventReview {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String ReviewId;
-	private String EventId;
-	private String UserId;
-	private String Rating;
-	private String Comment;
-	public String getReviewId() {
-		return ReviewId;
-	}
-	public void setReviewId(String reviewId) {
-		ReviewId = reviewId;
-	}
-	public String getEventId() {
-		return EventId;
-	}
-	public void setEventId(String eventId) {
-		EventId = eventId;
-	}
-	public String getUserId() {
-		return UserId;
-	}
-	public void setUserId(String userId) {
-		UserId = userId;
-	}
-	public String getRating() {
-		return Rating;
-	}
-	public void setRating(String rating) {
-		Rating = rating;
-	}
-	public String getComment() {
-		return Comment;
-	}
-	public void setComment(String comment) {
-		Comment = comment;
-	}
-	
-	
+    @Id
+    @GeneratedValue
+    private UUID reviewId; // 使用UUID作为主键类型，并自动生成值
+    
+    private UUID eventId; // 假设EventId也是UUID类型
+    private UUID userId;  // 假设UserId也是UUID类型
+    private int rating;   // 使用int类型来存储评分，根据需要可以改为double
+    private String comment;
 }

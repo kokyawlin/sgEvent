@@ -2,6 +2,7 @@ package com.nus.sgevent.repository;
 
 import com.nus.sgevent.entity.EventUser;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserRepository extends CrudRepository<EventUser, UUID> {
   @Query(
-    value = "select event_user.* from event_user where user_id=?1 and password=?2 ",
+    value = "SELECT * FROM event_user WHERE email_address = ?1 AND password = ?2",
     nativeQuery = true
   )
-  List<EventUser> checkUserLogin(String emailaddress, String Password);
+  Optional<EventUser> checkUserLogin(String emailAddress, String password);
 
   @Modifying
   @Query(

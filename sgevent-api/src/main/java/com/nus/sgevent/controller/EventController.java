@@ -1,10 +1,12 @@
-package com.nus.sgevent;
+package com.nus.sgevent.controller;
 
 import com.nus.sgevent.entity.Event;
 import com.nus.sgevent.entity.EventRegistration;
 import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
 import java.util.Date;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ public class EventController {
 
   @PostMapping(path = "/create") // Map ONLY POST Requests
   public @ResponseBody String addNewUser(
-    @RequestParam String EventCapicity,
+    @RequestParam int EventCapicity,
     @RequestParam String EventTitle,
     @RequestParam String EventDescription,
     @RequestParam String OwnerId,
@@ -47,7 +49,7 @@ public class EventController {
     // @RequestParam means it is a parameter from the GET or POST request
 
     Event n = new Event();
-    n.setEventCapicity(EventCapicity);
+    n.setEventCapacity(EventCapicity);
     n.setEventCreateDt(new Date());
     n.setEventDesc(EventDescription);
     n.setEventOwnerId(OwnerId);
@@ -74,8 +76,8 @@ public class EventController {
 
   @PostMapping(path = "/register") // Map ONLY POST Requests
   public @ResponseBody String RegisterEvent(
-    @RequestParam String MemberId,
-    @RequestParam int EventId
+    @RequestParam UUID MemberId,
+    @RequestParam UUID EventId
   ) {
     EventRegistration EReg = new EventRegistration();
     EReg.setEventId(EventId);
