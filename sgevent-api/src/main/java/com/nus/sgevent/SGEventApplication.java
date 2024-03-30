@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 public class SGEventApplication extends SpringBootServletInitializer {
 
