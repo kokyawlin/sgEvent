@@ -7,7 +7,7 @@ module.exports = {
     app.use(
       "/sgEvent/",
       createProxyMiddleware({
-        target: "http://localhost:8080",
+        target: "http://localhost:8080/sgevent/",
         pathRewrite: {
           "/sgEvent/": "",
         },
