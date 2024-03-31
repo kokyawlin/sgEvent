@@ -1,4 +1,4 @@
-package com.nus.sgevent;
+package com.nus.sgevent.controller;
 
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.repository.RoleRepository;

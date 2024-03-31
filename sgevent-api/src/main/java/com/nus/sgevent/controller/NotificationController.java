@@ -1,6 +1,7 @@
-package com.nus.sgevent;
+package com.nus.sgevent.controller;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,8 +30,8 @@ public class NotificationController {
 	private NotificationRepository notiRepository;
 	
 	@PostMapping(path="/create") // Map ONLY POST Requests
-	public @ResponseBody String addNewNotification(@RequestParam String event_id
-			, @RequestParam String userid
+	public @ResponseBody String addNewNotification(@RequestParam UUID event_id
+			, @RequestParam UUID userid
 			, @RequestParam String notimessage) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request

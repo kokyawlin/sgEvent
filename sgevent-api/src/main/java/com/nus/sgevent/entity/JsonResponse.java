@@ -1,30 +1,16 @@
 package com.nus.sgevent.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class JsonResponse {
 
-  private boolean Success;
+  private boolean success;
 
-  private String Message;
+  private String message;
 
-  public JsonResponse(boolean success,String message){
-    this.setSuccess(success);
-    this.setMessage(message);
-  }
-
-  public boolean getSuccess() {
-    return Success;
-  }
-
-  public void setSuccess(boolean success) {
-    Success = success;
-  }
-
-  public String getMessage() {
-    return Message;
-  }
-
-  public void setMessage(String message) {
-    Message = message;
-  }
-
+  // 由于使用了Lombok的@Data注解，自动生成所有的getter和setter方法
+  // 同时使用了@AllArgsConstructor注解自动生成包含所有参数的构造函数，所以不需要手动定义构造函数
 }
