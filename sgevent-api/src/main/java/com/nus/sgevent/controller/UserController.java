@@ -48,6 +48,7 @@ public class UserController {
     // @RequestParam means it is a parameter from the GET or POST request
 
     user.setCreateTime(new Date());
+
     userRepository.save(user);
 
 	return ResponseEntity.ok(new JsonResponse(true, "Add user successful."));
