@@ -1,94 +1,44 @@
 package com.nus.sgevent.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 @Table(name = "event_user")
+@Data
+@NoArgsConstructor
 public class EventUser {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "user_id")
-  private UUID UserId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @Column(name = "user_id")
+    private UUID userId;
 
-  @Column(name = "user_name")
-  private String UserName;
+    @NotBlank 
+    @Column(name = "user_name")
+    private String userName;
 
-  @Column(name = "password")
-  private String Password;
+    @NotBlank 
+    @Column(name = "password")
+    private String password;
 
-  @Column(name = "email_address")
-  private String EmailAddress;
+    @NotBlank 
+    @Email 
+    @Column(name = "email_address")
+    private String emailAddress;
 
-  @Column(name = "active_status")
-  private int ActiveStatus;
+    @Column(name = "active_status")
+    private int activeStatus;
 
-  @Column(name = "role_id")
-  private int RoleId;
+    @Column(name = "role_id")
+    private int roleId;
 
-  @Column(name = "create_time")
-  private Date CreateTime;
+    @Column(name = "create_time")
+    private Date createTime;
 
-  public UUID getUserId() {
-    return UserId;
-  }
-
-  public void setUserId(UUID userId) {
-    UserId = userId;
-  }
-
-  public String getUserName() {
-    return UserName;
-  }
-
-  public void setUserName(String userName) {
-    UserName = userName;
-  }
-
-  public String getPassword() {
-    return Password;
-  }
-
-  public void setPassword(String password) {
-    Password = password;
-  }
-
-  public String getEmailAddress() {
-    return EmailAddress;
-  }
-
-  public void setEmailAddress(String emailAddress) {
-    EmailAddress = emailAddress;
-  }
-
-  public int getActiveStatus() {
-    return ActiveStatus;
-  }
-
-  public void setActiveStatus(int activeStatus) {
-    ActiveStatus = activeStatus;
-  }
-
-  public Date getCreateTime() {
-    return CreateTime;
-  }
-
-  public void setCreateTime(Date createTime) {
-    CreateTime = createTime;
-  }
-
-  public int getRoleId() {
-    return RoleId;
-  }
-
-  public void setRoleId(int roleId) {
-    RoleId = roleId;
-  }
 }

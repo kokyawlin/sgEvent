@@ -8,9 +8,11 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: () => ({
-        url: "/login",
+      // Adjust the query to accept credentials and pass them in the request body
+      query: (credentials) => ({
+        url: "/eventuser/UserLogin",
         method: "POST",
+        body: credentials, // This will be the object containing the email and password
       }),
     }),
   }),
