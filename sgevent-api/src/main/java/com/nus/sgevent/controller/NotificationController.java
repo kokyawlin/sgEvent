@@ -33,8 +33,7 @@ public class NotificationController {
 	public @ResponseBody String addNewNotification(@RequestParam UUID event_id
 			, @RequestParam UUID userid
 			, @RequestParam String notimessage) {
-		// @ResponseBody means the returned String is the response, not a view name
-		// @RequestParam means it is a parameter from the GET or POST request
+
 
 		Notification noti = new Notification();
 		noti.setUserId(userid);

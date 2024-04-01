@@ -52,18 +52,18 @@ public class UserController {
     userRepository.save(user);
 
 	return ResponseEntity.ok(new JsonResponse(true, "Add user successful."));
+	return ResponseEntity.ok(new JsonResponse());
   }
 
   @DeleteMapping(path = "/delete/{id}") // Map ONLY DELETE Requests
   public @ResponseBody ResponseEntity<Object> deleteUser(
     @PathVariable("id") UUID id
   ) {
-    // @ResponseBody means the returned String is the response, not a view name
-    // @RequestParam means it is a parameter from the GET or POST request
 
     userRepository.deleteById(id);
 
 	return ResponseEntity.ok(new JsonResponse(true, "Delete user successful."));
+	return ResponseEntity.ok(new JsonResponse());
   }
 
   @PostMapping(path = "/update") // Map ONLY POST Requests
@@ -84,6 +84,7 @@ public class UserController {
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(new JsonResponse(true, "Update user successful."));
+        .body(true,new JsonResponse());
     } else {
       throw new ResponseStatusException(
         HttpStatus.NOT_MODIFIED,
@@ -159,12 +160,12 @@ public class UserController {
   }
 
 
-  // 3月30日更改
+  
   @PostMapping(path = "/UserLogin")
   public ResponseEntity<?> checkUserLogin(@RequestBody EventUser user) {
       Optional<EventUser> optionalUser = userRepository.checkUserLogin(user.getEmailAddress(), user.getPassword());
       if(optionalUser.isPresent()) {
-          // 简化的响应，仅表示登录成功
+        
           return ResponseEntity.ok().body(Map.of("message", "Login successful"));
       } else {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Incorrect username or password"));

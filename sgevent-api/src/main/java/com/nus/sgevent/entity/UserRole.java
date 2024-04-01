@@ -7,19 +7,33 @@ import jakarta.persistence.Table;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "user_role") // 明确指定表名
-@Data // 使用Lombok自动生成getter、setter方法
+@Table(name = "user_role") 
+@Data
+@NoArgsConstructor
 public class UserRole {
 
     @Id
-    private int roleId; // 使用int作为主键类型
+    private int roleId; 
 
     private String roleName;
     private String permission;
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	public String getPermission() {
+		return permission;
+	}
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
 
     
-    // 由于使用了Lombok的@Data注解，手动定义的getter和setter方法不再需要
+    
 }

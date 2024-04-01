@@ -2,16 +2,14 @@ package com.nus.sgevent.entity;
 
 import java.util.Date;
 import java.util.UUID;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import lombok.Data;
 
-@Entity
-@Table(name = "users")
+
 @Data
+
 public class userObj {
     
     @Id
@@ -38,5 +36,4 @@ public class userObj {
     
     private String permission;
 
-    // Lombok @Data annotation generates all getters and setters, so manual definitions are not needed.
 }

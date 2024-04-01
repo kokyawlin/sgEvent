@@ -9,6 +9,7 @@ import java.util.UUID;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Table(name = "notification")
 @Data
@@ -16,11 +17,11 @@ import lombok.NoArgsConstructor;
 public class Notification {
     @Id
     @GeneratedValue
-    private UUID notificationId; // 使用UUID作为主键类型
+    private UUID notificationId; 
     private String notiMessage;
-    private UUID eventId; // 假设EventId也是UUID类型
-    private UUID userId;  // 假设UserId也是UUID类型
+    private UUID eventId; 
+    private UUID userId;  
     private Date notificationDt;
 
-    // Lombok @Data注解自动为所有字段生成getter和setter方法
+ 
 }

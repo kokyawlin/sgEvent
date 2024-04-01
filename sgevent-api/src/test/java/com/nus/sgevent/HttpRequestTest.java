@@ -1,4 +1,4 @@
-package com.example.testingweb;
+package com.nus.sgevent;
 
 import org.junit.jupiter.api.Test;
 
