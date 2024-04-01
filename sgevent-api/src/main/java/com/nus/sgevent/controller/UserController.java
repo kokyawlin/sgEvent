@@ -1,4 +1,4 @@
-package com.nus.sgevent;
+package com.nus.sgevent.controller;
 
 import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.JsonResponse;
@@ -9,7 +9,10 @@ import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,21 +158,22 @@ public class UserController {
     return ResponseEntity.ok(UserFound);
   }
 
-  @GetMapping(path = "/UserLogin")
-  public String checkUserLogin(
-    @PathVariable("emailaddress") String emailaddress,
-    @PathVariable("password") String password
-  ) {
-    if (userRepository.checkUserLogin(emailaddress, password).size() > 0) return (
-      "success:" + JwtUtil.generateToken(emailaddress)
-    ); else {
-      throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        "Incorrect username or password"
-      );
-    }
-  }
 
+  // 3月30日更改
+  @PostMapping(path = "/UserLogin")
+  public ResponseEntity<?> checkUserLogin(@RequestBody EventUser user) {
+      Optional<EventUser> optionalUser = userRepository.checkUserLogin(user.getEmailAddress(), user.getPassword());
+      if(optionalUser.isPresent()) {
+          // 简化的响应，仅表示登录成功
+          return ResponseEntity.ok().body(Map.of("message", "Login successful"));
+      } else {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Incorrect username or password"));
+      }
+  }
+  
+  
+  
+    
   @PostMapping(path = "/chpassword") // Map ONLY POST Requests
   public @ResponseBody String ChangePassword(
     @RequestParam String username,

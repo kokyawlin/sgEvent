@@ -1,53 +1,26 @@
 package com.nus.sgevent.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.Date;
+import java.util.UUID;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
+@Table(name = "notification")
+@Data
+@NoArgsConstructor
 public class Notification {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String NotificationId;
-	private String NotiMessage;
-	private String EventId;
-	private String UserId;
-	private Date NotificationDt;
-	public String getNotificationId() {
-		return NotificationId;
-	}
-	public void setNotificationId(String notificationId) {
-		NotificationId = notificationId;
-	}
-	public String getNotiMessage() {
-		return NotiMessage;
-	}
-	public void setNotiMessage(String notiMessage) {
-		NotiMessage = notiMessage;
-	}
-	public String getEventId() {
-		return EventId;
-	}
-	public void setEventId(String eventId) {
-		EventId = eventId;
-	}
-	public String getUserId() {
-		return UserId;
-	}
-	public void setUserId(String userId) {
-		UserId = userId;
-	}
-	public Date getNotificationDt() {
-		return NotificationDt;
-	}
-	public void setNotificationDt(Date notificationDt) {
-		NotificationDt = notificationDt;
-	}
-	
-	
-	
-	
+    @Id
+    @GeneratedValue
+    private UUID notificationId; // 使用UUID作为主键类型
+    private String notiMessage;
+    private UUID eventId; // 假设EventId也是UUID类型
+    private UUID userId;  // 假设UserId也是UUID类型
+    private Date notificationDt;
+
+    // Lombok @Data注解自动为所有字段生成getter和setter方法
 }

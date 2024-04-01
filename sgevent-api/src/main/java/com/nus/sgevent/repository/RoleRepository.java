@@ -13,4 +13,5 @@ public interface RoleRepository extends CrudRepository<UserRole, Integer> {
     nativeQuery = true
   )
   UserRole SearchUserRole(int RoleId);
+  Iterable<UserRole> findAll();
 }

@@ -15,7 +15,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (userInfo.username || (isSuccess && data.data.username)) {
+    if (userInfo.userName || (isSuccess && data.data.userName)) {
       navigate("/home");
     }
   }, [isSuccess, userInfo, data]);

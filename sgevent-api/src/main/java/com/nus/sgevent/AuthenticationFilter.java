@@ -1,5 +1,6 @@
 package com.nus.sgevent;
 
+import com.nus.sgevent.controller.UserController;
 import com.nus.sgevent.extservices.JwtUtil;
 import java.lang.reflect.Method;
 import java.util.List;

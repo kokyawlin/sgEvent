@@ -1,19 +1,112 @@
-CREATE DATABASE `eventmanagement`;
+-- Dumping database structure for neweventhub
+CREATE DATABASE IF NOT EXISTS `neweventhub` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `neweventhub`;
 
-CREATE TABLE `eventuser` (
-  `UserId` varchar(20) NOT NULL,
-  `UserName` varchar(45) DEFAULT NULL,
-  `Password` varchar(20) DEFAULT NULL,
-  `EmailAddress` varchar(30) DEFAULT NULL,
-  `ActiveStatus` tinyint DEFAULT NULL,
-  `RoleId` varchar(45) DEFAULT NULL,
-  `CreateTime` date DEFAULT NULL,
-  PRIMARY KEY (`UserId`)
+-- Dumping structure for table neweventhub.event
+CREATE TABLE IF NOT EXISTS `event` (
+  `event_id` binary(16) NOT NULL,
+  `event_capacity` int NOT NULL,
+  `event_create_dt` datetime(6) DEFAULT NULL,
+  `event_desc` varchar(255) DEFAULT NULL,
+  `event_end_dt` datetime(6) DEFAULT NULL,
+  `event_owner_id` varchar(255) DEFAULT NULL,
+  `event_place` varchar(255) DEFAULT NULL,
+  `event_start_dt` datetime(6) DEFAULT NULL,
+  `event_status` varchar(255) DEFAULT NULL,
+  `event_title` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`event_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `userrole` (
-  `RoleId` varchar(45) NOT NULL,
-  `RoleName` varchar(45) DEFAULT NULL,
-  `Permission` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`RoleId`)
+-- Dumping data for table neweventhub.event: ~0 rows (approximately)
+
+-- Dumping structure for table neweventhub.event_registration
+CREATE TABLE IF NOT EXISTS `event_registration` (
+  `register_id` binary(16) NOT NULL,
+  `event_id` binary(16) DEFAULT NULL,
+  `register_dt` datetime(6) DEFAULT NULL,
+  `register_status` varchar(255) DEFAULT NULL,
+  `user_id` binary(16) DEFAULT NULL,
+  PRIMARY KEY (`register_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.event_registration: ~0 rows (approximately)
+
+-- Dumping structure for table neweventhub.event_review
+CREATE TABLE IF NOT EXISTS `event_review` (
+  `review_id` binary(16) NOT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `event_id` binary(16) DEFAULT NULL,
+  `rating` int NOT NULL,
+  `user_id` binary(16) DEFAULT NULL,
+  PRIMARY KEY (`review_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.event_review: ~0 rows (approximately)
+
+-- Dumping structure for table neweventhub.event_user
+CREATE TABLE IF NOT EXISTS `event_user` (
+  `user_id` binary(16) NOT NULL,
+  `active_status` int DEFAULT NULL,
+  `create_time` datetime(6) DEFAULT NULL,
+  `email_address` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role_id` int DEFAULT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.event_user: ~1 rows (approximately)
+REPLACE INTO `event_user` (`user_id`, `active_status`, `create_time`, `email_address`, `password`, `role_id`, `user_name`) VALUES
+	(_binary 0x3b3cd242620e4496953fc14619adef1d, 1, '2024-03-30 17:56:00.044000', 'kaysonliu1996@gmail.com', '789546', 1, 'Liu Yikai');
+
+-- Dumping structure for table neweventhub.notification
+CREATE TABLE IF NOT EXISTS `notification` (
+  `notification_id` binary(16) NOT NULL,
+  `event_id` binary(16) DEFAULT NULL,
+  `noti_message` varchar(255) DEFAULT NULL,
+  `notification_dt` datetime(6) DEFAULT NULL,
+  `user_id` binary(16) DEFAULT NULL,
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.notification: ~0 rows (approximately)
+
+-- Dumping structure for table neweventhub.users
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` binary(16) NOT NULL,
+  `active_status` int NOT NULL,
+  `create_time` datetime(6) DEFAULT NULL,
+  `email_address` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `permission` varchar(255) DEFAULT NULL,
+  `role_id` int NOT NULL,
+  `role_name` varchar(255) DEFAULT NULL,
+  `user_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `UK_1ar956vx8jufbghpyi09yr16l` (`email_address`),
+  UNIQUE KEY `UK_k8d0f2n7n88w1a16yhua64onx` (`user_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.users: ~0 rows (approximately)
+
+-- Dumping structure for table neweventhub.user_role
+CREATE TABLE IF NOT EXISTS `user_role` (
+  `role_id` int NOT NULL,
+  `permission` varchar(255) DEFAULT NULL,
+  `role_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.user_role: ~2 rows (approximately)
+REPLACE INTO `user_role` (`role_id`, `permission`, `role_name`) VALUES
+	(1, 'JOIN EVENT, LEAVE EVENT', 'MEMBER'),
+	(2, 'EVENT CRUD', 'EVENT OWNER');
+
+-- Dumping structure for table neweventhub.user_role_seq
+CREATE TABLE IF NOT EXISTS `user_role_seq` (
+  `next_val` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table neweventhub.user_role_seq: ~1 rows (approximately)
+REPLACE INTO `user_role_seq` (`next_val`) VALUES
+	(1);
