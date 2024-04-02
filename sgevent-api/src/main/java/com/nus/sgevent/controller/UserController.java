@@ -133,7 +133,7 @@ public class UserController {
     userObj UserFound = new userObj();
     EventUser evuser = null;
     try {
-      evuser = userRepository.SearchEventUser(username);
+      evuser = userRepository.SearchEventUserName(username);
 
       UserFound.setUserName(evuser.getUserName());
       UserFound.setActiveStatus(evuser.getActiveStatus());
@@ -168,7 +168,6 @@ public class UserController {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Incorrect username or password"));
       }
   }
-  
   
   
     
