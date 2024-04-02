@@ -1,8 +1,11 @@
 package com.nus.sgevent.entity;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
@@ -26,4 +29,7 @@ public class Event {
     private int eventCapacity;
     private String eventOwnerId;
     private String eventStatus;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] eventCover;
 }

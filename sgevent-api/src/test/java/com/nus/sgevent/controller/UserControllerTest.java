@@ -1,6 +1,4 @@
 package com.nus.sgevent.controller;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.junit.jupiter.api.extension.ExtendWith;
