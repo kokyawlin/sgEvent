@@ -8,15 +8,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { authSelector } from "../../state/auth/slice";
+import { userNameSelector } from "../../state/auth/slice";
 import { useSelector } from "react-redux";
-import useLogout from "../../pages/logout";
+import LogoutPage from "../../pages/logout";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { userInfo } = useSelector((state) => authSelector(state));
-  
-  const logout = useLogout();
+  const userName = useSelector(userNameSelector); // 直接获取用户名
+
+  const logout = LogoutPage();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -25,6 +25,7 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -40,7 +41,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Welcome {userInfo.user_name}
+            Welcome to SG EventHub! {userName}
           </Typography>
 
           <div>
@@ -69,12 +70,16 @@ export default function Header() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>{userName}</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={() => {
-                handleClose();
-                logout(); // 调用logout函数
-              }}>Log out</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  logout(); // 调用logout函数
+                }}
+              >
+                Log out
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>

@@ -1,47 +1,57 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { authApi } from "../../services/auth.service";
+import { createSlice } from '@reduxjs/toolkit';
+import { authApi } from '../../services/auth.service';
 
-const initialState = {
-  isLoggedin: false,
-  userInfo: {},
-};
+// 定义Slice名称
+export const authSliceName = 'auth';
 
-export const authSliceName = "authSlice";
-
+// 创建Slice
 const authSlice = createSlice({
   name: authSliceName,
-  initialState,
+  initialState: {
+    userInfo: null, // 初始时没有用户信息
+    isLoggedIn: false, // 初始时用户未登录
+  },
   reducers: {
-    // 更新登录状态
-    setLoginStatus: (state, action) => {
-      const { payload } = action;
-      state.isLoggedin = payload;
-    },
-    // 新增：设置用户信息
+    // 设置用户凭证（登录/注册成功后）
     setCredentials: (state, action) => {
-      const { user_info, isLoggedin } = action.payload;
-      state.userInfo = user_info; // 假设payload包含用户信息
-      state.isLoggedin = isLoggedin; // 可以同时设置登录状态
+      // 直接从action.payload中存储用户信息
+      state.userInfo = action.payload;
+      // 假设如果有userInfo，则用户已登录
+      state.isLoggedIn = true;
     },
+    // 用户登出
     logout: (state) => {
-      state.user_info = {};
-      state.isLoggedin = false;
+      // 重置状态为初始值
+      state.userInfo = null;
+      state.isLoggedIn = false;
     },
-
+    // 可以根据需要添加其他reducers
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      authApi.endpoints.login.matchFulfilled,
-      (state, { payload }) => {
-        state.isLoggedin = true;
-        state.userInfo = payload.data; // 假设payload.data包含了需要的用户信息
-      }
-    );
+    // 通过RTK Query处理登录/注册成功
+    builder
+      .addMatcher(
+        authApi.endpoints.login.matchFulfilled,
+        (state, { payload }) => {
+          // 假设payload直接包含用户信息
+          state.isLoggedIn = true;
+          state.userInfo = payload; // 直接将userInfo设置为payload
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.signUp.matchFulfilled,
+        (state, { payload }) => {
+          state.isLoggedIn = true;
+          state.userInfo = payload; // 注册成功也是同样处理
+        }
+      );
   },
 });
 
-export const { setLoginStatus, setCredentials, logout } = authSlice.actions;
-
+// 导出actions和reducer
+export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
 
-export const authSelector = (state) => state?.[authSliceName];
+// 导出selectors
+export const authSelector = (state) => state[authSliceName];
+export const userNameSelector = (state) => state[authSliceName].userInfo?.userName;

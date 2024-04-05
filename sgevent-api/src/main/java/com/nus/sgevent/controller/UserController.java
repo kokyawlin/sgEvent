@@ -9,6 +9,7 @@ import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -161,9 +162,9 @@ public class UserController {
   @PostMapping(path = "/UserLogin")
   public ResponseEntity<?> checkUserLogin(@RequestBody EventUser user) {
       Optional<EventUser> optionalUser = userRepository.checkUserLogin(user.getEmailAddress(), user.getPassword());
-      if(optionalUser.isPresent()) {
-        
-          return ResponseEntity.ok().body(Map.of("message", "Login successful"));
+      if (optionalUser.isPresent()) {
+          EventUser loggedInUser = optionalUser.get();
+          return ResponseEntity.ok().body(loggedInUser); // 直接返回用户信息
       } else {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Incorrect username or password"));
       }
