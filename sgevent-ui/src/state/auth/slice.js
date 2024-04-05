@@ -19,6 +19,13 @@ const authSlice = createSlice({
       // 假设如果有userInfo，则用户已登录
       state.isLoggedIn = true;
     },
+
+    // 设置注册信息
+    setSignUp: (state, action) => {
+      const { userInfo } = action.payload;
+      state.userInfo = userInfo; // 假设 payload 包含用户信息
+    },
+
     // 用户登出
     logout: (state) => {
       // 重置状态为初始值
@@ -49,7 +56,7 @@ const authSlice = createSlice({
 });
 
 // 导出actions和reducer
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, setSignUp, logout } = authSlice.actions;
 export default authSlice.reducer;
 
 // 导出selectors

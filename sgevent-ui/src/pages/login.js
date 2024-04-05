@@ -5,7 +5,8 @@ import { useLoginMutation } from '../services/auth.service';
 import { navigate } from 'gatsby';
 import Header from "../components/Header/index";
 import { setCredentials } from '../state/auth/slice'; // 确保这个导入路径是正确的
- 
+import { Link } from 'gatsby';
+
 export default function LoginPage() {
     const dispatch = useDispatch();
     // 注意这里使用emailAddress来反映数据库字段
@@ -73,6 +74,18 @@ export default function LoginPage() {
                         Login
                     </Button>
                     {isError && <Typography color="error">Login failed. Please try again.</Typography>}
+                    
+                    {/* 在这里添加注册链接 */}
+                    <Typography style={{ marginTop: 20 }}>
+                    Don't have SG EventHub account? 
+                    <span
+                        style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                        onClick={() => navigate('/signup')}
+                    >
+                        Sign Up now
+                    </span>
+                    </Typography>
+             
                 </Grid>
             </Grid>
         </React.Fragment>

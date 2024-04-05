@@ -32,6 +32,9 @@ public interface UserRepository extends CrudRepository<EventUser, UUID> {
     UUID UserId
   );
 
+  @Query(value = "SELECT count(*) > 0 FROM event_user WHERE user_name = ?1", nativeQuery = true)
+  boolean existsByUserName(String userName);
+
   @Query(
     value = "Update event_user set password=?2 where user_name=?1",
     nativeQuery = true
@@ -50,3 +53,5 @@ public interface UserRepository extends CrudRepository<EventUser, UUID> {
   )
   EventUser SearchEventUserName(String UserName);
 }
+
+

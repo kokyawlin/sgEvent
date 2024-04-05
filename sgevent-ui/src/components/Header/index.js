@@ -41,7 +41,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Welcome to SG EventHub! {userName}
+            SG EventHub
           </Typography>
 
           <div>
@@ -70,7 +70,7 @@ export default function Header() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>{userName}</MenuItem>
+              <MenuItem onClick={handleClose}>{userName ? userName : 'Profile'}</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
               <MenuItem
                 onClick={() => {

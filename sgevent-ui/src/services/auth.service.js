@@ -33,7 +33,7 @@ export const authApi = createApi({
     signUp: builder.mutation({
       // Adjust the query to accept user info and pass them in the request body
       query: (userInfo) => ({
-        url: "/eventuser/UserSignUp", // 假设这是你的注册接口
+        url: "/eventuser/UserSignup", // 假设这是你的注册接口
         method: "POST",
         body: userInfo, // This will be the object containing the user info
       }),

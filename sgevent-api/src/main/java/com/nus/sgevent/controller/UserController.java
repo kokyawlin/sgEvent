@@ -171,6 +171,27 @@ public class UserController {
   }
   
   
+  @PostMapping(path = "/UserSignup") // Map ONLY POST Requests
+  public ResponseEntity<?> UserSignup(@RequestBody EventUser user) {
+      // 检查邮箱地址是否已被注册
+      if (CheckUserExist(user.getEmailAddress())) {
+          return ResponseEntity
+                  .status(HttpStatus.BAD_REQUEST)
+                  .body(Map.of("error", "Email address is already registered."));
+      }
+      
+      // 设置创建时间
+      user.setCreateTime(new Date());
+      
+      // 保存新用户到数据库
+      userRepository.save(user);
+      
+      // 返回成功响应
+      return ResponseEntity.ok(user); // 直接返回注册的用户信息
+  }
+  
+  
+
     
   @PostMapping(path = "/chpassword") // Map ONLY POST Requests
   public @ResponseBody String ChangePassword(
@@ -220,3 +241,4 @@ public class UserController {
     return found;
   }
 }
+
