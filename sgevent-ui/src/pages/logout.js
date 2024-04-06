@@ -4,7 +4,7 @@ import { navigate } from 'gatsby';
 import { logout } from '../state/auth/slice'; // 确保路径正确
 
 // 这个logout函数可以被放在Header组件或任何适合的地方
-export default function useLogout() {
+export default function LogoutPage() {
   const dispatch = useDispatch();
   
   const performLogout = () => {

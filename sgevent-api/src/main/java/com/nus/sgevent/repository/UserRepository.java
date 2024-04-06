@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserRepository extends CrudRepository<EventUser, UUID> {
   @Query(
-    value = "SELECT * FROM event_user WHERE email_address = ?1 AND password = ?2",
+    value = "SELECT user_id, user_name, role_id, create_time, active_status, email_address, password FROM event_user WHERE email_address = ?1 AND password = ?2",
     nativeQuery = true
   )
   Optional<EventUser> checkUserLogin(String emailAddress, String password);
@@ -31,6 +31,9 @@ public interface UserRepository extends CrudRepository<EventUser, UUID> {
     int UserRole,
     UUID UserId
   );
+
+  @Query(value = "SELECT count(*) > 0 FROM event_user WHERE user_name = ?1", nativeQuery = true)
+  boolean existsByUserName(String userName);
 
   @Query(
     value = "Update event_user set password=?2 where user_name=?1",
@@ -50,3 +53,5 @@ public interface UserRepository extends CrudRepository<EventUser, UUID> {
   )
   EventUser SearchEventUserName(String UserName);
 }
+
+

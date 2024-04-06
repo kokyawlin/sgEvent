@@ -9,6 +9,7 @@ import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -133,7 +134,7 @@ public class UserController {
     userObj UserFound = new userObj();
     EventUser evuser = null;
     try {
-      evuser = userRepository.SearchEventUser(username);
+      evuser = userRepository.SearchEventUserName(username);
 
       UserFound.setUserName(evuser.getUserName());
       UserFound.setActiveStatus(evuser.getActiveStatus());
@@ -161,16 +162,36 @@ public class UserController {
   @PostMapping(path = "/UserLogin")
   public ResponseEntity<?> checkUserLogin(@RequestBody EventUser user) {
       Optional<EventUser> optionalUser = userRepository.checkUserLogin(user.getEmailAddress(), user.getPassword());
-      if(optionalUser.isPresent()) {
-        
-          return ResponseEntity.ok().body(Map.of("message", "Login successful"));
+      if (optionalUser.isPresent()) {
+          EventUser loggedInUser = optionalUser.get();
+          return ResponseEntity.ok().body(loggedInUser); // 直接返回用户信息
       } else {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Incorrect username or password"));
       }
   }
   
   
+  @PostMapping(path = "/UserSignup") // Map ONLY POST Requests
+  public ResponseEntity<?> UserSignup(@RequestBody EventUser user) {
+      // 检查邮箱地址是否已被注册
+      if (CheckUserExist(user.getEmailAddress())) {
+          return ResponseEntity
+                  .status(HttpStatus.BAD_REQUEST)
+                  .body(Map.of("error", "Email address is already registered."));
+      }
+      
+      // 设置创建时间
+      user.setCreateTime(new Date());
+      
+      // 保存新用户到数据库
+      userRepository.save(user);
+      
+      // 返回成功响应
+      return ResponseEntity.ok(user); // 直接返回注册的用户信息
+  }
   
+  
+
     
   @PostMapping(path = "/chpassword") // Map ONLY POST Requests
   public @ResponseBody String ChangePassword(
@@ -220,3 +241,4 @@ public class UserController {
     return found;
   }
 }
+
