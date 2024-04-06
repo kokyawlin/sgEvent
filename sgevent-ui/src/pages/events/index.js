@@ -1,10 +1,11 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import EventCard from "../../components/EventCard";
+// import Box from "@mui/material/Box";
+import EventList from "../../components/EventList";
 import Layout from "../../components/Layout";
 import AdminPageLayout from "../../components/AdminPageLayout";
 import { navigate } from "gatsby";
+
 export default function EventPage() {
   const onAddClick = () => {
     navigate("/events/add");
@@ -19,9 +20,7 @@ export default function EventPage() {
           </Button>
         }
       >
-        <Box sx={{ flexGrow: 1 }}>
-          <EventCard />
-        </Box>
+        <EventList />
       </AdminPageLayout>
     </Layout>
   );

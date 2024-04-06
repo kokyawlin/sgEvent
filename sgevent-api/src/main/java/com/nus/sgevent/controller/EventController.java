@@ -2,11 +2,11 @@ package com.nus.sgevent.controller;
 
 import com.nus.sgevent.entity.Event;
 import com.nus.sgevent.entity.EventRegistration;
+import com.nus.sgevent.entity.JsonResponse;
 import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
 import java.util.Date;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,30 +37,15 @@ public class EventController {
   }
 
   @PostMapping(path = "/create") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser(
-    @RequestParam int EventCapicity,
-    @RequestParam String EventTitle,
-    @RequestParam String EventDescription,
-    @RequestParam String OwnerId,
-    @RequestParam String EventPlace,
-    @RequestParam Date EventStartDate,
-    @RequestParam Date EventEndDate
+  public @ResponseBody ResponseEntity<Object> addNewUser(
+    @RequestBody Event event
   ) {
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
-
-    Event n = new Event();
-    n.setEventCapacity(EventCapicity);
-    n.setEventCreateDt(new Date());
-    n.setEventDesc(EventDescription);
-    n.setEventOwnerId(OwnerId);
-    n.setEventPlace(EventPlace);
-    n.setEventStartDt(EventStartDate);
-    n.setEventEndDt(EventEndDate);
-    n.setEventStatus("Created");
-    n.setEventTitle(EventTitle);
-    eventRepository.save(n);
-    return "Saved";
+    event.setEventCreateDt(new Date());
+    event.setEventStatus("Open");
+    eventRepository.save(event);
+    return ResponseEntity.ok(new JsonResponse(true, "Add Event successful."));
   }
 
   @PostMapping(path = "/updatestatus") // Map ONLY POST Requests

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "../../components/Layout";
 import AdminPageLayout from "../../components/AdminPageLayout";
 import EditEventForm from "../../components/EditEventForm";
-import { useAddUserMutation } from "../../services/user.service";
+import { useAddEventMutation } from "../../services/event.service";
 import { useGetRoleListQuery } from "../../services/role.service";
 import { navigate } from "gatsby";
 
@@ -10,13 +10,15 @@ export default function AddEvent({ location }) {
   const params = new URLSearchParams(location.search);
 
   //   const { data: roleList, isLoading: isRoleLoading } = useGetRoleListQuery();
-  const [addEvent, result] = useAddUserMutation();
+  const [addEvent, result] = useAddEventMutation();
+  const [user, setUser] = React.useState({});
 
   useEffect(() => {
-    if (result.isSuccess) navigate("/users");
+    if (result.isSuccess) navigate("/events");
   }, [result.isSuccess]);
 
   const onAddEvent = (user) => {
+    setUser(user);
     addEvent(user);
   };
   return (
@@ -24,8 +26,7 @@ export default function AddEvent({ location }) {
       <AdminPageLayout title="Add New Event">
         <EditEventForm
           isEdit={false}
-          value={{}}
-          locationList={[]}
+          value={user}
           onSubmit={onAddEvent}
           isUpdating={result.isLoading}
           isError={result.isError}

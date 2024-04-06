@@ -10,23 +10,10 @@ export const eventApi = createApi({
   endpoints: (builder) => ({
     getEventList: builder.query({
       query: () => ({
-        url: "/eventuser/all",
+        url: "/event/all",
         method: "GET",
       }),
     }),
-    // getUserDetails: builder.query({
-    //   query: (userId) => ({
-    //     url: `/eventuser/${userId}`,
-    //     method: "GET",
-    //   }),
-    // }),
-    // updateUser: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `/eventuser/update`,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    // }),
     addEvent: builder.mutation({
       query: (payload) => ({
         url: `/event/create`,
@@ -34,21 +21,9 @@ export const eventApi = createApi({
         body: payload,
       }),
     }),
-    // deleteUser: builder.mutation({
-    //   query: (userId) => ({
-    //     url: `/eventuser/delete/${userId}`,
-    //     method: "DELETE",
-    //   }),
-    // }),
   }),
 });
 
 export const selectEvent = (state) => state?.[eventReducerName];
 
-export const {
-  useGetUserListQuery,
-  //   useGetUserDetailsQuery,
-  //   useUpdateUserMutation,
-  useAddEventMutation,
-  //   useDeleteUserMutation,
-} = eventApi;
+export const { useGetEventListQuery, useAddEventMutation } = eventApi;

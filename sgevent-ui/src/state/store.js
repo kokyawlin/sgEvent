@@ -4,6 +4,8 @@ import authReducer, { authSliceName } from "./auth/slice";
 import { authApi, authReducerName } from "../services/auth.service";
 import { userApi, userReducerName } from "../services/user.service";
 import { roleApi, roleReducerName } from "../services/role.service";
+import { eventApi, eventReducerName } from "../services/event.service";
+import { mapApi, mapReducerName } from "../services/map.service";
 import {
   persistStore,
   persistReducer,
@@ -27,6 +29,8 @@ const rootReducer = combineReducers({
   [authReducerName]: authApi.reducer,
   [userReducerName]: userApi.reducer,
   [roleReducerName]: roleApi.reducer,
+  [eventReducerName]: eventApi.reducer,
+  [mapReducerName]: mapApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -42,6 +46,8 @@ const store = configureStore({
     authApi.middleware,
     userApi.middleware,
     roleApi.middleware,
+    eventApi.middleware,
+    mapApi.middleware,
   ],
 });
 

@@ -11,6 +11,8 @@ import FormLabel from "@mui/material/FormLabel";
 import DateTimeRangePicker from "../DateTimeRangePicker";
 import QuantityInput from "../QuantityInput";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import InputFileUpload from "../FileUploader";
+import LocationSelect from "../LocationSelect";
 
 export default function EditEventForm({
   value,
@@ -40,11 +42,24 @@ export default function EditEventForm({
       ) : null}
 
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
+        <InputFileUpload
+          label="Event Cover"
+          onChange={(value) => {
+            setEvent((prev) => ({
+              ...prev,
+              eventCover: value,
+            }));
+          }}
+        />
+      </FormControl>
+
+      <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="event-title"
           label="Title"
           disabled={isEdit}
           value={event.eventTitle}
+          required
           onChange={(event) => {
             setEvent((prev) => ({
               ...prev,
@@ -60,6 +75,7 @@ export default function EditEventForm({
           label="Description"
           disabled={isEdit}
           value={event.eventDesc}
+          required
           onChange={(event) => {
             setEvent((prev) => ({
               ...prev,
@@ -75,10 +91,11 @@ export default function EditEventForm({
           label="Capacity"
           min={1}
           max={1000}
-          onChange={(event) => {
+          required
+          onChange={(event, value) => {
             setEvent((prev) => ({
               ...prev,
-              eventStartDt: event.start,
+              eventCapacity: value,
             }));
           }}
         />
@@ -89,36 +106,27 @@ export default function EditEventForm({
           label="Duration"
           defaultStartVal={event.eventStartDt}
           defaultEndVal={event.eventEndDt}
-          onChange={(event) => {
+          onChange={(values) => {
+            if (values.length !== 2) return;
             setEvent((prev) => ({
               ...prev,
-              eventStartDt: event.start,
-              eventEndDt: event.end,
+              eventStartDt: values?.[0]?.format(),
+              eventEndDt: values?.[1]?.format(),
             }));
           }}
         />
       </FormControl>
 
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
-        <TextField
-          id="outlined-select-status"
-          select
+        <LocationSelect
           label="Location"
-          value={event.eventPlace}
-          helperText="Please select event location"
-          onChange={(event) => {
+          onChange={(event, value) => {
             setEvent((prev) => ({
               ...prev,
-              eventPlace: event.target.value,
+              eventPlace: value.label,
             }));
           }}
-        >
-          {locationList.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        />
       </FormControl>
 
       <br />
