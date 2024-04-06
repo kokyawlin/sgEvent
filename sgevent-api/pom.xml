@@ -15,7 +15,7 @@
 	<name>sgevent-api</name>
 	<description>SG Event API</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>17</java.version>
 		<start-class>com.nus.sgevent.SGEventApplication</start-class>
 	</properties>
 	<dependencies>
