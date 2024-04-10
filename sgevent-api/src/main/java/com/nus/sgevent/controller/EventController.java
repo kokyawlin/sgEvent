@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class EventController {
   }
 
   @PostMapping(path = "/create") // Map ONLY POST Requests
-  public @ResponseBody ResponseEntity<Object> addNewUser(
+  public @ResponseBody ResponseEntity<Object> addNewEvent(
     @RequestBody Event event
   ) {
     // @ResponseBody means the returned String is the response, not a view name
@@ -48,16 +49,56 @@ public class EventController {
     return ResponseEntity.ok(new JsonResponse(true, "Add Event successful."));
   }
 
-  @PostMapping(path = "/updatestatus") // Map ONLY POST Requests
-  public @ResponseBody String UpdateStatus(
-    @RequestParam String EventTitle,
-    @RequestParam String OwnerId,
-    @RequestParam String EventStatus
+  @DeleteMapping(path = "/delete/{id}") // Map ONLY DELETE Requests
+  public @ResponseBody ResponseEntity<Object> deleteEvent(
+    @PathVariable("id") UUID id
   ) {
-    eventRepository.UpdateEvent(EventTitle, OwnerId, EventStatus);
+    eventRepository.deleteById(id);
 
-    //eventRepository.save(n);
-    return "Updated";
+    return ResponseEntity.ok(
+      new JsonResponse(true, "Delete event successful.")
+    );
+  }
+
+  @GetMapping("/details/{eventid}")
+  public ResponseEntity<?> retrieveEventDetails(
+    @PathVariable("eventid") String eventid
+  ) {
+    try {
+      UUID uuid = UUID.fromString(eventid);
+      return ResponseEntity.ok(eventRepository.findById(uuid));
+    } catch (NullPointerException ex) {
+      throw new ResponseStatusException(
+        HttpStatus.NOT_FOUND,
+        "Event Not Found!"
+      );
+    }
+  }
+
+  @PostMapping(path = "/update") // Map ONLY POST Requests
+  public @ResponseBody ResponseEntity<Object> UpdateStatus(
+    @RequestBody Event event
+  ) {
+    int updatestatus = eventRepository.UpdateEvent(
+      event.getEventId(),
+      event.getEventTitle(),
+      event.getEventDesc(),
+      event.getEventCover(),
+      event.getEventPlace(),
+      event.getEventStartDt(),
+      event.getEventEndDt()
+    );
+
+    if (updatestatus == 1) {
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(new JsonResponse(true, "Update event successful."));
+    } else {
+      throw new ResponseStatusException(
+        HttpStatus.NOT_MODIFIED,
+        "Update Error"
+      );
+    }
   }
 
   @PostMapping(path = "/register") // Map ONLY POST Requests
