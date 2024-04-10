@@ -5,17 +5,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useSearchLocationMutation } from "../../services/map.service";
 import debounce from "lodash/debounce";
 
-export default function LocationSelect({ label, onChange }) {
+export default function LocationSelect({ label, value, onChange }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [searchLocation, result] = useSearchLocationMutation();
 
   React.useEffect(() => {
     if (!result.isSuccess || !result.data) return;
-    const opts = result.data.results.map((item) => ({
-      label: item.ADDRESS,
-      id: item.POSTAL,
-    }));
+    const opts = result.data.results.map((item) => item.ADDRESS);
     setOptions(opts);
     setOpen(true);
   }, [result.data]);
@@ -34,6 +31,7 @@ export default function LocationSelect({ label, onChange }) {
     <Autocomplete
       id="location-select"
       open={open}
+      defaultValue={value}
       onOpen={() => {
         setOpen(true);
       }}
@@ -41,8 +39,8 @@ export default function LocationSelect({ label, onChange }) {
         setOpen(false);
       }}
       onInputChange={debounce(onInputChange, 500)}
-      isOptionEqualToValue={(option, value) => option.label === value.label}
-      getOptionLabel={(option) => option.label}
+      isOptionEqualToValue={(option, value) => option === value}
+      getOptionLabel={(option) => option}
       options={options}
       onChange={onChange}
       loading={result.isLoading}

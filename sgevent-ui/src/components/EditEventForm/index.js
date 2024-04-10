@@ -16,7 +16,6 @@ import LocationSelect from "../LocationSelect";
 
 export default function EditEventForm({
   value,
-  locationList,
   onSubmit,
   isUpdating,
   isError,
@@ -43,6 +42,7 @@ export default function EditEventForm({
 
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <InputFileUpload
+          value={value.eventCover}
           label="Event Cover"
           onChange={(value) => {
             setEvent((prev) => ({
@@ -57,7 +57,6 @@ export default function EditEventForm({
         <TextField
           id="event-title"
           label="Title"
-          disabled={isEdit}
           value={event.eventTitle}
           required
           onChange={(event) => {
@@ -73,7 +72,6 @@ export default function EditEventForm({
         <TextField
           id="event-desc"
           label="Description"
-          disabled={isEdit}
           value={event.eventDesc}
           required
           onChange={(event) => {
@@ -89,6 +87,7 @@ export default function EditEventForm({
         <QuantityInput
           aria-label="Capacity"
           label="Capacity"
+          value={value.eventCapacity}
           min={1}
           max={1000}
           required
@@ -120,10 +119,11 @@ export default function EditEventForm({
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <LocationSelect
           label="Location"
+          value={value.eventPlace}
           onChange={(event, value) => {
             setEvent((prev) => ({
               ...prev,
-              eventPlace: value.label,
+              eventPlace: value,
             }));
           }}
         />
