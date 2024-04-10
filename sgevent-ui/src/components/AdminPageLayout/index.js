@@ -6,7 +6,7 @@ const AdminPageLayout = ({ title, rightEl, children }) => {
   return (
     <>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {title}
         </Typography>
         <Box display="flex" alignItems="center">

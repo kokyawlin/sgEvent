@@ -1,11 +1,6 @@
 package com.nus.sgevent.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.UUID;
@@ -19,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Event {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "event_id")
   private UUID eventId; // 使用UUID作为主键类型
 
@@ -34,11 +29,9 @@ public class Event {
   @Column(name = "event_create_dt")
   private Date eventCreateDt;
 
-  @NotBlank
   @Column(name = "event_start_dt")
   private Date eventStartDt;
 
-  @NotBlank
   @Column(name = "event_end_dt")
   private Date eventEndDt;
 
@@ -46,11 +39,9 @@ public class Event {
   @Column(name = "event_place")
   private String eventPlace;
 
-  @NotBlank
   @Column(name = "event_capacity")
   private int eventCapacity;
 
-  @NotBlank
   @Column(name = "event_owner_id")
   private String eventOwnerId;
 

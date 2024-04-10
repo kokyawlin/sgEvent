@@ -15,15 +15,17 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function InputFileUpload({ label, onChange }) {
+export default function InputFileUpload({ label, value, onChange }) {
   const [picture, setPicture] = React.useState("");
   const onUpload = (e) => {
     // setPicture(URL.createObjectURL(e.target.files[0]));
     toBase64(e.target.files[0], (value) => {
       onChange(value);
-      setPicture(value);
     });
   };
+  React.useEffect(() => {
+    setPicture(value);
+  }, [value]);
   return (
     <>
       <Button
