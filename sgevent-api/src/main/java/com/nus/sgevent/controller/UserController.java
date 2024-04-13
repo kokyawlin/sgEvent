@@ -159,7 +159,7 @@ public class UserController {
 
 
   
-  @PostMapping(path = "/UserLogin")
+  @PostMapping(path = "/login")
   public ResponseEntity<?> checkUserLogin(@RequestBody EventUser user) {
       Optional<EventUser> optionalUser = userRepository.checkUserLogin(user.getEmailAddress(), user.getPassword());
       if (optionalUser.isPresent()) {

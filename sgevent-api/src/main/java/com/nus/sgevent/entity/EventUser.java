@@ -23,7 +23,6 @@ public class EventUser {
     @Column(name = "user_name")
     private String userName;
 
-    @NotBlank 
     @Column(name = "password")
     private String password;
 

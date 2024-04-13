@@ -11,8 +11,17 @@ import DeleteModal from "../DeleteModal";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import img from "../../images/img-placeholder.png";
+import { authSelector } from "../../state/auth/slice";
+import { useSelector } from "react-redux";
 
-export default function EventCard({ value, onEdit, onDelete }) {
+export default function EventCard({
+  value,
+  onEdit,
+  onDelete,
+  onJoin,
+  isAdmin,
+}) {
+  const { userInfo } = useSelector((state) => authSelector(state));
   return (
     <Card sx={{ width: "100%", margin: 1 }}>
       <CardContent>
@@ -87,27 +96,36 @@ export default function EventCard({ value, onEdit, onDelete }) {
                 justifyContent: "space-around",
               }}
             >
-              <Button fullWidth variant="contained">
-                Join
-              </Button>
-              <Box sx={{ display: "flex" }}>
-                <IconButton
-                  color="primary"
-                  aria-label="Edit"
+              {isAdmin ? (
+                <Box sx={{ display: "flex" }}>
+                  <IconButton
+                    color="primary"
+                    aria-label="Edit"
+                    onClick={() => {
+                      onEdit(value.eventId);
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <DeleteModal
+                    onDelete={() => {
+                      onDelete(value.eventId);
+                    }}
+                    title="Delete event?"
+                    label={`Are you sure to delete ${value.eventTitle}?`}
+                  />
+                </Box>
+              ) : (
+                <Button
+                  fullWidth
+                  variant="contained"
                   onClick={() => {
-                    onEdit(value.eventId);
+                    onJoin({ eventId: value.eventId, userId: userInfo.userId });
                   }}
                 >
-                  <EditIcon />
-                </IconButton>
-                <DeleteModal
-                  onDelete={() => {
-                    onDelete(value.eventId);
-                  }}
-                  title="Delete event?"
-                  label={`Are you sure to delete ${value.eventTitle}?`}
-                />
-              </Box>
+                  Join
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>

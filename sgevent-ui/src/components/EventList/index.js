@@ -2,22 +2,25 @@ import React from "react";
 import {
   useGetEventListQuery,
   useDeleteEventMutation,
+  useRegisterEventMutation,
 } from "../../services/event.service";
 import EventCard from "../EventCard";
 import Box from "@mui/material/Box";
 import { navigate } from "gatsby";
+import { authSelector } from "../../state/auth/slice";
+import { useSelector } from "react-redux";
 
-const EventList = () => {
+const EventList = ({ isAdmin }) => {
   const { data, error, isLoading, refetch } = useGetEventListQuery(null, {
     refetchOnMountOrArgChange: true,
   });
   const [deleteEvent, deleteResult] = useDeleteEventMutation();
+  const [joinEvent, joinResult] = useRegisterEventMutation();
 
   const onEdit = (eventId) => {
     navigate(`/events/edit?id=${eventId}`);
   };
 
-  console.log(data);
   return (
     <Box
       sx={{
@@ -33,6 +36,8 @@ const EventList = () => {
           onDelete={deleteEvent}
           isDeleteing={deleteResult.isLoading}
           onEdit={onEdit}
+          onJoin={joinEvent}
+          isAdmin={isAdmin}
         />
       ))}
     </Box>

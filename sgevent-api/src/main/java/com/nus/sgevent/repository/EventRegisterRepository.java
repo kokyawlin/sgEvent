@@ -15,5 +15,5 @@ public interface EventRegisterRepository
     value = "select event_registration.* from event_registration where event_id=?1",
     nativeQuery = true
   )
-  EventUser SearchEventRegister(String event_id);
+  EventUser SearchEventRegister(UUID event_id);
 }

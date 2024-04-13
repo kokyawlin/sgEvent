@@ -3,10 +3,12 @@ package com.nus.sgevent.controller;
 import com.nus.sgevent.entity.Event;
 import com.nus.sgevent.entity.EventRegistration;
 import com.nus.sgevent.entity.JsonResponse;
+import com.nus.sgevent.entity.eventObj;
 import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,9 +33,28 @@ public class EventController {
   private EventRegisterRepository eventregisterRepository;
 
   @GetMapping(path = "/all")
-  public @ResponseBody Iterable<Event> getAllEvents() {
-    // This returns a JSON or XML with the users
-    return eventRepository.findAll();
+  public @ResponseBody ResponseEntity<?> getAllEvents() {
+    // Getting event registration list
+    Iterable<EventRegistration> ERegList = eventregisterRepository.findAll();
+    // Iterable<eventObj> ResponseList;
+    //Getting all events
+    Iterable<Event> evtList = eventRepository.findAll();
+    // Map<Integer, Event> map = new HashMap<>();
+    Map<UUID, eventObj> map = new HashMap<>();
+    for (Event event : evtList) {
+      map.put(event.getEventId(), new eventObj(event));
+      Stream<EventRegistration> streamEvtList = StreamSupport.stream(
+        ERegList.spliterator(),
+        false
+      );
+      List<EventRegistration> regList = streamEvtList
+        .filter(evt -> evt.getEventId() == event.getEventId())
+        .toList();
+      eventObj existingEvent = map.get(event.getEventId());
+      existingEvent.setRegistrationList(regList);
+    }
+    List<eventObj> mergedArray = new ArrayList<eventObj>(map.values());
+    return ResponseEntity.ok(mergedArray);
   }
 
   @PostMapping(path = "/create") // Map ONLY POST Requests
@@ -101,19 +121,27 @@ public class EventController {
     }
   }
 
-  @PostMapping(path = "/register") // Map ONLY POST Requests
-  public @ResponseBody String RegisterEvent(
-    @RequestParam UUID MemberId,
-    @RequestParam UUID EventId
+  @GetMapping(path = "/register/{eventid}/{userid}") // Map ONLY POST Requests
+  public ResponseEntity<?> RegisterEvent(
+    @PathVariable("eventid") String eventid,
+    @PathVariable("userid") String userid
   ) {
-    EventRegistration EReg = new EventRegistration();
-    EReg.setEventId(EventId);
-    EReg.setRegisterDt(new Date());
-    EReg.setRegisterStatus("Registered");
-    EReg.setUserId(MemberId);
-    eventregisterRepository.save(EReg);
+    try {
+      EventRegistration EReg = new EventRegistration();
+      EReg.setEventId(UUID.fromString(eventid));
+      EReg.setRegisterDt(new Date());
+      EReg.setRegisterStatus("Registered");
+      EReg.setUserId(UUID.fromString(userid));
+      eventregisterRepository.save(EReg);
 
-    return "Updated";
+      return ResponseEntity.ok(
+        new JsonResponse(true, "register event successful.")
+      );
+    } catch (NullPointerException ex) {
+      return ResponseEntity
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new JsonResponse(false, "register event failed."));
+    }
   }
 
   @GetMapping("/{title}")
