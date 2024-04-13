@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseURL } from "../constants";
+import { commonHeader } from "../utils";
 
 export const eventReducerName = "eventApi";
 
 export const eventApi = createApi({
   reducerPath: eventReducerName,
-  baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+  baseQuery: fetchBaseQuery({ baseUrl: baseURL, prepareHeaders: commonHeader }),
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getEventList: builder.query({

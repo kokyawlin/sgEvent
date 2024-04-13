@@ -62,7 +62,7 @@ export default function EventCard({
                   variant="caption"
                   color="text.secondary"
                 >
-                  {`Capacity: 0/${value.eventCapacity}`}
+                  {`Capacity: ${value.registrationCount}/${value.eventCapacity}`}
                 </Typography>
                 <Typography
                   display="block"
@@ -119,11 +119,12 @@ export default function EventCard({
                 <Button
                   fullWidth
                   variant="contained"
+                  disabled={value.registered}
                   onClick={() => {
                     onJoin({ eventId: value.eventId, userId: userInfo.userId });
                   }}
                 >
-                  Join
+                  {value.registered?"Joined":"Join"}
                 </Button>
               )}
             </Box>
