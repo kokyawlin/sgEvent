@@ -20,4 +20,6 @@ public class eventObj extends Event {
   }
 
   private List<EventRegistration> registrationList;
+  private long registrationCount;
+  private boolean isRegistered;
 }

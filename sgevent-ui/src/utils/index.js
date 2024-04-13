@@ -1,4 +1,5 @@
 import { DATETIME_FORMAT } from "../constants";
+import { authSliceName } from "../state/auth/slice";
 import dayjs from "dayjs";
 
 export const getFormattedTime = (timestamp) => {
@@ -11,4 +12,11 @@ export const toBase64 = (file, callback) => {
     callback(e.target.result, e.target.error);
   };
   reader.readAsDataURL(file);
+};
+
+export const commonHeader = (headers, { getState }) => {
+  const userid = getState()[authSliceName].userInfo.userId;
+
+  headers.set("userid", userid);
+  return headers;
 };

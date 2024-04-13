@@ -7,6 +7,7 @@ import com.nus.sgevent.entity.eventObj;
 import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,25 +35,37 @@ public class EventController {
   private EventRegisterRepository eventregisterRepository;
 
   @GetMapping(path = "/all")
-  public @ResponseBody ResponseEntity<?> getAllEvents() {
+  public @ResponseBody ResponseEntity<?> getAllEvents(
+    @RequestHeader Map<String, String> header
+  ) {
     // Getting event registration list
+    UUID userid = UUID.fromString(header.get("userid"));
     Iterable<EventRegistration> ERegList = eventregisterRepository.findAll();
-    // Iterable<eventObj> ResponseList;
+    Supplier<Stream<EventRegistration>> streamEvtRegList = () ->
+      StreamSupport.stream(ERegList.spliterator(), false);
     //Getting all events
     Iterable<Event> evtList = eventRepository.findAll();
-    // Map<Integer, Event> map = new HashMap<>();
     Map<UUID, eventObj> map = new HashMap<>();
     for (Event event : evtList) {
       map.put(event.getEventId(), new eventObj(event));
-      Stream<EventRegistration> streamEvtList = StreamSupport.stream(
-        ERegList.spliterator(),
-        false
-      );
-      List<EventRegistration> regList = streamEvtList
-        .filter(evt -> evt.getEventId() == event.getEventId())
-        .toList();
       eventObj existingEvent = map.get(event.getEventId());
-      existingEvent.setRegistrationList(regList);
+      //check whether current user has registred the event
+      boolean isRegistered =
+        streamEvtRegList
+          .get()
+          .filter(evt ->
+            evt.getEventId().equals(event.getEventId()) &&
+            evt.getUserId().equals(userid)
+          )
+          .count() >
+        0;
+      //get number of users who has registered to the event
+      long regCount = streamEvtRegList
+        .get()
+        .filter(evt -> evt.getEventId().equals(event.getEventId()))
+        .count();
+      existingEvent.setRegistrationCount(regCount);
+      existingEvent.setRegistered(isRegistered);
     }
     List<eventObj> mergedArray = new ArrayList<eventObj>(map.values());
     return ResponseEntity.ok(mergedArray);
