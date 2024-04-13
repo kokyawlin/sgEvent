@@ -174,6 +174,7 @@ public class UserController {
   @PostMapping(path = "/UserSignup") // Map ONLY POST Requests
   public ResponseEntity<?> UserSignup(@RequestBody EventUser user) {
       // 检查邮箱地址是否已被注册
+    
       if (CheckUserExist(user.getEmailAddress())) {
           return ResponseEntity
                   .status(HttpStatus.BAD_REQUEST)
@@ -183,6 +184,12 @@ public class UserController {
       // 设置创建时间
       user.setCreateTime(new Date());
       
+      // 设置活动状态为1
+      user.setActiveStatus(1);
+      
+      // 设置活动状态为1
+      user.setRoleId(1);
+
       // 保存新用户到数据库
       userRepository.save(user);
       
