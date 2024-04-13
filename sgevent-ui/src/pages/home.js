@@ -1,15 +1,16 @@
 import React from "react";
-import { Typography } from "@mui/material";
-import Layout from "../components/Layout";
-import Header from "../components/Header/index";
+import { authSelector } from "../state/auth/slice";
+import { useSelector } from "react-redux";
+import { HOME_MAPPING } from "../constants";
+import { navigate } from "gatsby";
 
 export default function Home() {
-  
-  return (
-    <div>
-      <Header /> {/* Header显示在页面顶部 */}
-      <h1>Welcome to Your Dashboard! </h1>
-      {/* 这里可以根据需要添加更多内容 */}
-    </div>
-  );
+  const { isLoggedIn, userInfo } = useSelector((state) => authSelector(state));
+  React.useEffect(() => {
+    //bring user to other pages based on their roleid
+    const link =
+      isLoggedIn && userInfo.roleId ? HOME_MAPPING[userInfo.roleId] : "/login";
+    navigate(link);
+  }, [isLoggedIn, userInfo]);
+  return null;
 }

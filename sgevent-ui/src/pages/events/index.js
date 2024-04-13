@@ -5,22 +5,28 @@ import EventList from "../../components/EventList";
 import Layout from "../../components/Layout";
 import AdminPageLayout from "../../components/AdminPageLayout";
 import { navigate } from "gatsby";
+import { authSelector } from "../../state/auth/slice";
+import { useSelector } from "react-redux";
 
 export default function EventPage() {
+  const { userInfo } = useSelector((state) => authSelector(state));
   const onAddClick = () => {
     navigate("/events/add");
   };
+  const isAdmin = userInfo.roleId === 2;
   return (
     <Layout>
       <AdminPageLayout
-        title="Manage Events"
+        title={isAdmin ? "Manage Events" : "Events"}
         rightEl={
-          <Button variant="contained" onClick={onAddClick}>
-            Add new event
-          </Button>
+          isAdmin ? (
+            <Button variant="contained" onClick={onAddClick}>
+              Add new event
+            </Button>
+          ) : null
         }
       >
-        <EventList />
+        <EventList isAdmin={isAdmin} />
       </AdminPageLayout>
     </Layout>
   );
