@@ -39,7 +39,7 @@ import org.junit.Test;
 @WebMvcTest(value = UserController.class)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-public class UserControllerIntegrationTest {
+public class EventControllerIntegrationTest {
 
 	 @Autowired
 	 private MockMvc mvc;
@@ -64,58 +64,38 @@ public class UserControllerIntegrationTest {
 	 @MockBean
 	 private JavaMailSender javaMailSender;
 	
-	 UUID mokid = UUID.randomUUID();
-    
-     
-	 
 	 @Test
-	 public void givenEventUser_thenReturnJsonArray()
+	 public void givenEvent_thenReturnJsonArray()
 	   throws Exception {
-		 EventUser mokuser = new EventUser();
-		 mokuser.setUserId(mokid);
-	     mokuser.setActiveStatus(1);
-	     mokuser.setPassword("a");
-	     mokuser.setCreateTime(new Date());
-	     mokuser.setEmailAddress("a@b.com");
-	     mokuser.setUserName("a");
-	     mokuser.setRoleId(1);
-	     List<EventUser> allEventUser = Arrays.asList(mokuser);
+		 UUID mokid = UUID.randomUUID();
+	     Event mokevent = new Event();
+	     mokevent.setEventCapacity(200);
+	     mokevent.setEventCreateDt(new Date());
+	     mokevent.setEventId(mokid);
+	     mokevent.setEventDesc("TestEvent");
+	     mokevent.setEventPlace("Singapore");
+	     mokevent.setEventStatus("Open");
+	     List<Event> allEvent = Arrays.asList(mokevent);
+	    
 
-	     when(userRepository.findAll()).thenReturn(allEventUser);
+	     when(eventRepository.findAll()).thenReturn(allEvent);
 	     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-					"/v1/eventuser/all").accept(
+					"/v1/event/all").accept(
 					MediaType.APPLICATION_JSON);
 	     MvcResult result = mvc.perform(requestBuilder).andReturn();
 	     assertNotNull(result);
-	    
 	     
-	     mvc.perform(MockMvcRequestBuilders.get("/v1/eventuser/a"))
+	     mvc.perform(MockMvcRequestBuilders.get("/v1/event/a"))
 	     .andExpect(MockMvcResultMatchers.status().isNotFound());
-	     
-	    
-	     
  }
 	 @Test
-	 public void EventUserPostDelTest() throws Exception
+	 public void EventPostDelTest() throws Exception
 	 {
-		 EventUser mokuser = new EventUser();
-		 mokuser.setUserId(mokid);
-	     mokuser.setActiveStatus(1);
-	     mokuser.setPassword("a");
-	     mokuser.setCreateTime(new Date());
-	     mokuser.setEmailAddress("a@b.com");
-	     mokuser.setUserName("a");
-	     mokuser.setRoleId(1);
-		 mvc.perform( MockMvcRequestBuilders
-		   	      .post("/v1/eventuser/add")
-		   	      .content(asJsonString(mokuser))
-		   	      .contentType(MediaType.APPLICATION_JSON)
-		   	      .accept(MediaType.APPLICATION_JSON))
-		         .andExpect(status().isOk());
-		     
-		    
-		     mvc.perform(MockMvcRequestBuilders.delete("/v1/eventuser/delete/", mokid))
+		 UUID mokid = UUID.randomUUID();
+		   
+		     mvc.perform(MockMvcRequestBuilders.delete("/v1/event/delete/", mokid))
 		                .andExpect(status().isNotFound());
+		 
 	 }
 	 
 	 public static String asJsonString(final Object obj) {
