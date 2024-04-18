@@ -1,12 +1,14 @@
 package com.nus.sgevent.controller;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.JsonResponse;
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.entity.userObj;
 import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,11 +29,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
+import com.nus.sgevent.extservices.MailService;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/v1/eventuser")
 public class UserController {
 
+  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
   @Autowired 
   private UserRepository userRepository;
 
@@ -170,7 +174,8 @@ public class UserController {
       }
   }
   
-  
+  @Autowired
+  private MailService mailService;
   @PostMapping(path = "/UserSignup") // Map ONLY POST Requests
   public ResponseEntity<?> UserSignup(@RequestBody EventUser user) {
       // 检查邮箱地址是否已被注册
@@ -192,9 +197,20 @@ public class UserController {
 
       // 保存新用户到数据库
       userRepository.save(user);
-      
+
+      // 尝试发送欢迎邮件
+      try {
+        String subject = "Welcome to SGeventhub！";
+        String body = "Dear " + user.getUserName() + ",\n\nThanks for signing up our website. \n\nWe are happy you joined our community! \nSGeventhub Team";
+        mailService.sendEmail(user.getEmailAddress(), subject, body);
+        logger.info("Welcome email sent successfully to {}", user.getEmailAddress());
+      } catch (Exception e) {
+        logger.error("Failed to send welcome email to {}: {}", user.getEmailAddress(), e.getMessage());
+      }
+    
       // 返回成功响应
       return ResponseEntity.ok(user); // 直接返回注册的用户信息
+      
   }
   
   

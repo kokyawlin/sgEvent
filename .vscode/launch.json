@@ -6,17 +6,16 @@
     "configurations": [
       {
         "type": "java",
-        "name": "Current File",
-        "request": "launch",
-        "mainClass": "${file}"
-      },
-      {
-        "type": "java",
-        "name": "SGEventApplication",
+        "name": "Launch SGEventApplication",
         "request": "launch",
         "mainClass": "com.nus.sgevent.SGEventApplication",
         "projectName": "sgevent",
-        "args": "project Password2024! sgevent832@gmail.com SGEventG00gle"
+        "env": {
+          "db.username": "project",
+          "db.password": "Password2024!",
+          "mail.username": "sgevent832@gmail.com",
+          "mail.password": "SGEventG00gle"
+        }
       }
     ]
   }

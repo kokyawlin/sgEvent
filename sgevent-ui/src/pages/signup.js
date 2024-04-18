@@ -18,9 +18,15 @@ export default function SignUpPage() {
      signUp({ userName, emailAddress, password })
   };
 
-  useEffect(()=>{
-    result.isSuccess&& navigate('/login');
-  },[result])
+  useEffect(() => {
+    if (result.isSuccess) {
+      navigate('/login');
+    } else if (result.isError) {
+      console.error('Signup error:', result.error);
+      // 可以在这里添加一些用户友好的错误消息显示
+    }
+  }, [result]);
+  
 
   return (
     <Layout>
