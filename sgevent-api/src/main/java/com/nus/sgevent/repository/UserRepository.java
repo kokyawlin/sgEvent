@@ -14,11 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 // CRUD refers Create, Read, Update, Delete
 @Transactional
 public interface UserRepository extends CrudRepository<EventUser, UUID> {
+
+  Optional<EventUser> findByEmailAddress(String emailAddress);
+
+  // 新增方法用于保存新用户信息
+  EventUser save(EventUser user);
+
+  
   @Query(
     value = "SELECT user_id, user_name, role_id, create_time, active_status, email_address, password FROM event_user WHERE email_address = ?1 AND password = ?2",
     nativeQuery = true
   )
   Optional<EventUser> checkUserLogin(String emailAddress, String password);
+
 
   @Modifying
   @Query(

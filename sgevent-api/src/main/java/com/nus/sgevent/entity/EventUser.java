@@ -34,8 +34,16 @@ public class EventUser {
     @Column(name = "active_status")
     private int activeStatus;
 
+    public void setActiveStatus(int activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+
     @Column(name = "role_id")
     private int roleId;
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
     @Column(name = "create_time")
     private Date createTime;

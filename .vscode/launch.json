@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "Launch SGEventApplication",
+        "request": "launch",
+        "mainClass": "com.nus.sgevent.SGEventApplication",
+        "projectName": "sgevent",
+        "env": {
+          "db.username": "project",
+          "db.password": "Password2024!",
+          "mail.username": "postmaster@sandbox3f0313b9d9324335bd1ccff2a4588579.mailgun.org",
+          "mail.password": "acf4f0ec4f48a1a27a64c22992d5875a-19806d14-f12c1bda"
+        }
+      }
+    ]
+  }

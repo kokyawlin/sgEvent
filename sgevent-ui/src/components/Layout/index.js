@@ -4,10 +4,16 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import FormSkeleton from "../FormSkeleton";
 
+
 export default function Layout({ children, isLoading }) {
+
+
   return (
     <Box>
       <Header />
+
+
+
       <br />
       <Container>{isLoading ? <FormSkeleton /> : children}</Container>
     </Box>

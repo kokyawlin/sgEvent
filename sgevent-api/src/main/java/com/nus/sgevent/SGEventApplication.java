@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 public class SGEventApplication extends SpringBootServletInitializer {
 
@@ -26,8 +25,7 @@ public class SGEventApplication extends SpringBootServletInitializer {
 
   @Override
   protected SpringApplicationBuilder configure(
-    SpringApplicationBuilder builder
-  ) {
+    SpringApplicationBuilder builder  ) {
     return builder.sources(SGEventApplication.class);
   }
 }
