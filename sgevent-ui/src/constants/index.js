@@ -1,4 +1,4 @@
-export const baseURL = "http://localhost:8000/sgEvent/v1";
+export const baseURL = "http://13.250.39.99:8080/sgevent/v1";
 export const mapURL = "http://localhost:8000/sgMap";
 export const statusOptions = [
   { value: 1, label: "Active" },
