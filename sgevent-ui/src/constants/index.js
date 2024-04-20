@@ -2,7 +2,9 @@ export const baseURL = "http://13.250.39.99:8080/sgevent/v1";
 export const mapURL = "https://www.onemap.gov.sg/api/common/elastic";
 
 
-//local test
+
+// local test
+
 // export const baseURL = "http://localhost:8000/sgEvent/v1";
 // export const mapURL = "http://localhost:8000/sgMap";
 
