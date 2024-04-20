@@ -124,7 +124,7 @@ export default function EventCard({
                     onJoin({ eventId: value.eventId, userId: userInfo.userId });
                   }}
                 >
-                  {value.registered?"Joined":"Join"}
+                  {value.registered ? "Joined" : "Join"}
                 </Button>
               )}
             </Box>
