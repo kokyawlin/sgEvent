@@ -120,7 +120,8 @@ public class EventController {
       event.getEventCover(),
       event.getEventPlace(),
       event.getEventStartDt(),
-      event.getEventEndDt()
+      event.getEventEndDt(),
+      event.getEventCapacity()
     );
 
     if (updatestatus == 1) {

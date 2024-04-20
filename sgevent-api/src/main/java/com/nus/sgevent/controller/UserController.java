@@ -1,14 +1,12 @@
 package com.nus.sgevent.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.JsonResponse;
 import com.nus.sgevent.entity.UserRole;
 import com.nus.sgevent.entity.userObj;
+import com.nus.sgevent.extservices.MailService;
 import com.nus.sgevent.repository.RoleRepository;
 import com.nus.sgevent.repository.UserRepository;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +29,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
-import com.nus.sgevent.extservices.MailService;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/v1/eventuser")
 public class UserController {
 
-  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-  @Autowired 
+  private static final Logger logger = LoggerFactory.getLogger(
+    UserController.class
+  );
+
+  @Autowired
   private UserRepository userRepository;
 
   @Autowired
@@ -53,19 +55,16 @@ public class UserController {
 
     userRepository.save(user);
 
-	return ResponseEntity.ok(new JsonResponse(true, "Add user successful."));
-
+    return ResponseEntity.ok(new JsonResponse(true, "Add user successful."));
   }
 
   @DeleteMapping(path = "/delete/{id}") // Map ONLY DELETE Requests
   public @ResponseBody ResponseEntity<Object> deleteUser(
     @PathVariable("id") UUID id
   ) {
-
     userRepository.deleteById(id);
 
-	return ResponseEntity.ok(new JsonResponse(true, "Delete user successful."));
-
+    return ResponseEntity.ok(new JsonResponse(true, "Delete user successful."));
   }
 
   @PostMapping(path = "/update") // Map ONLY POST Requests
@@ -86,7 +85,6 @@ public class UserController {
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(new JsonResponse(true, "Update user successful."));
-   
     } else {
       throw new ResponseStatusException(
         HttpStatus.NOT_MODIFIED,
@@ -108,13 +106,7 @@ public class UserController {
     Iterable<EventUser> eventuserlist = userRepository.findAll();
     List<userObj> entityList = new ArrayList<userObj>();
     for (EventUser eU : eventuserlist) {
-      userObj uO = new userObj();
-      uO.setUserId(eU.getUserId());
-      uO.setUserName(eU.getUserName());
-      uO.setPassword(eU.getPassword());
-      uO.setCreateTime(eU.getCreateTime());
-      uO.setActiveStatus(eU.getActiveStatus());
-      uO.setRoleId(eU.getRoleId());
+      userObj uO = new userObj(eU);
 
       UserRole evrole = roleRepository.SearchUserRole(eU.getRoleId());
       uO.setRoleName(evrole.getRoleName());
@@ -131,91 +123,93 @@ public class UserController {
     );
   }
 
-  @GetMapping("/{username}")
+  @GetMapping("/{userId}")
   public ResponseEntity<?> retrieveEventUser(
-    @PathVariable("username") String username
+    @PathVariable("userId") String userId
   ) {
-    userObj UserFound = new userObj();
-    EventUser evuser = null;
+    Optional<EventUser> evtUser = null;
     try {
-      evuser = userRepository.SearchEventUserName(username);
-
-      UserFound.setUserName(evuser.getUserName());
-      UserFound.setActiveStatus(evuser.getActiveStatus());
-      UserFound.setCreateTime(evuser.getCreateTime());
-      UserFound.setEmailAddress(evuser.getEmailAddress());
-      UserFound.setPassword(evuser.getPassword());
-      UserFound.setRoleId(evuser.getRoleId());
-      UserFound.setUserId(evuser.getUserId());
+      UUID uuid = UUID.fromString(userId);
+      evtUser = userRepository.findById(uuid);
+      EventUser userEntity = evtUser.get();
+      userObj UserFound = new userObj(userEntity);
+      UserRole evrole = roleRepository.SearchUserRole(userEntity.getRoleId());
+      UserFound.setRoleName(evrole.getRoleName());
+      UserFound.setPermission(evrole.getPermission());
+      return ResponseEntity.ok(UserFound);
     } catch (NullPointerException ex) {
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
         "User Not Found!"
       );
     }
-
-    UserRole evrole = roleRepository.SearchUserRole(evuser.getRoleId());
-    UserFound.setRoleName(evrole.getRoleName());
-    UserFound.setPermission(evrole.getPermission());
-    // return new ResponseEntity<>(UserFound, HttpStatus.OK);
-    return ResponseEntity.ok(UserFound);
   }
 
-
-  
   @PostMapping(path = "/login")
   public ResponseEntity<?> checkUserLogin(@RequestBody EventUser user) {
-      Optional<EventUser> optionalUser = userRepository.checkUserLogin(user.getEmailAddress(), user.getPassword());
-      if (optionalUser.isPresent()) {
-          EventUser loggedInUser = optionalUser.get();
-          return ResponseEntity.ok().body(loggedInUser); // 直接返回用户信息
-      } else {
-          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Incorrect username or password"));
-      }
+    Optional<EventUser> optionalUser = userRepository.checkUserLogin(
+      user.getEmailAddress(),
+      user.getPassword()
+    );
+    if (optionalUser.isPresent()) {
+      EventUser loggedInUser = optionalUser.get();
+      return ResponseEntity.ok().body(loggedInUser); // 直接返回用户信息
+    } else {
+      return ResponseEntity
+        .status(HttpStatus.UNAUTHORIZED)
+        .body(Map.of("error", "Incorrect username or password"));
+    }
   }
-  
+
   @Autowired
   private MailService mailService;
+
   @PostMapping(path = "/UserSignup") // Map ONLY POST Requests
   public ResponseEntity<?> UserSignup(@RequestBody EventUser user) {
-      // 检查邮箱地址是否已被注册
-    
-      if (CheckUserExist(user.getEmailAddress())) {
-          return ResponseEntity
-                  .status(HttpStatus.BAD_REQUEST)
-                  .body(Map.of("error", "Email address is already registered."));
-      }
-      
-      // 设置创建时间
-      user.setCreateTime(new Date());
-      
-      // 设置活动状态为1
-      user.setActiveStatus(1);
-      
-      // 设置活动状态为1
-      user.setRoleId(1);
+    // 检查邮箱地址是否已被注册
 
-      // 保存新用户到数据库
-      userRepository.save(user);
+    if (CheckUserExist(user.getEmailAddress())) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(Map.of("error", "Email address is already registered."));
+    }
 
-      // 尝试发送欢迎邮件
-      try {
-        String subject = "Welcome to SGeventhub！";
-        String body = "Dear " + user.getUserName() + ",\n\n\nThanks for signing up our website. \n\nWe are happy you joined our community! \n\n\nSGeventhub Team";
-        mailService.sendEmail(user.getEmailAddress(), subject, body);
-        logger.info("Welcome email sent successfully to {}", user.getEmailAddress());
-      } catch (Exception e) {
-        logger.error("Failed to send welcome email to {}: {}", user.getEmailAddress(), e.getMessage());
-      }
-    
-      // 返回成功响应
-      return ResponseEntity.ok(user); // 直接返回注册的用户信息
-      
+    // 设置创建时间
+    user.setCreateTime(new Date());
+
+    // 设置活动状态为1
+    user.setActiveStatus(1);
+
+    // 设置活动状态为1
+    user.setRoleId(1);
+
+    // 保存新用户到数据库
+    userRepository.save(user);
+
+    // 尝试发送欢迎邮件
+    try {
+      String subject = "Welcome to SGeventhub！";
+      String body =
+        "Dear " +
+        user.getUserName() +
+        ",\n\n\nThanks for signing up our website. \n\nWe are happy you joined our community! \n\n\nSGeventhub Team";
+      mailService.sendEmail(user.getEmailAddress(), subject, body);
+      logger.info(
+        "Welcome email sent successfully to {}",
+        user.getEmailAddress()
+      );
+    } catch (Exception e) {
+      logger.error(
+        "Failed to send welcome email to {}: {}",
+        user.getEmailAddress(),
+        e.getMessage()
+      );
+    }
+
+    // 返回成功响应
+    return ResponseEntity.ok(user); // 直接返回注册的用户信息
   }
-  
-  
 
-    
   @PostMapping(path = "/chpassword") // Map ONLY POST Requests
   public @ResponseBody String ChangePassword(
     @RequestParam String username,
@@ -264,4 +258,3 @@ public class UserController {
     return found;
   }
 }
-
