@@ -12,7 +12,7 @@ export default function EditEvent({ location }) {
   const params = new URLSearchParams(location.search);
   const eventId = params.get("id");
 
-  const { data, error, isLoading } = useGetEventDetailsQuery(eventId);
+  const { data, error, isFetching } = useGetEventDetailsQuery(eventId);
   const [updateEvent, result] = useUpdateEventMutation();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function EditEvent({ location }) {
     updateEvent(event);
   };
   return (
-    <Layout isLoading={isLoading}>
+    <Layout isLoading={isFetching}>
       <AdminPageLayout title="Edit Event">
         <EditEventForm
           isEdit

@@ -19,9 +19,8 @@ export default function LocationSelect({ label, value, onChange }) {
 
   const onInputChange = React.useCallback(
     (e, input) => {
-      if (!input) return;
+      if (!input || input === value) return;
 
-      setOpen(false);
       searchLocation(input);
     },
     [searchLocation]
