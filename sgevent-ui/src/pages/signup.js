@@ -72,7 +72,7 @@ export default function SignUpPage() {
               onClick={handleSignUp}
               disabled={result.isLoading}
               >
-              Sign Up
+              Sign Up and Auto Login
               </Button>
               {result.isError && <Typography color="error">Sign up failed. Please try again.</Typography>}
           </Grid>
