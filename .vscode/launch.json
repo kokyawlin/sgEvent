@@ -13,8 +13,8 @@
         "env": {
           "db.username": "project",
           "db.password": "Password2024!",
-          "mail.username": "kokyawlin@gmail.com",
-          "mail.password": "K8fpd0kxG4LJY6vs"
+          "mail.username": "postmaster@sandbox3f0313b9d9324335bd1ccff2a4588579.mailgun.org",
+          "mail.password": "acf4f0ec4f48a1a27a64c22992d5875a-19806d14-f12c1bda"
         }
       }
     ]

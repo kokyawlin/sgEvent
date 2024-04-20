@@ -201,7 +201,7 @@ public class UserController {
       // 尝试发送欢迎邮件
       try {
         String subject = "Welcome to SGeventhub！";
-        String body = "Dear " + user.getUserName() + ",\n\nThanks for signing up our website. \n\nWe are happy you joined our community! \nSGeventhub Team";
+        String body = "Dear " + user.getUserName() + ",\n\n\nThanks for signing up our website. \n\nWe are happy you joined our community! \n\n\nSGeventhub Team";
         mailService.sendEmail(user.getEmailAddress(), subject, body);
         logger.info("Welcome email sent successfully to {}", user.getEmailAddress());
       } catch (Exception e) {
