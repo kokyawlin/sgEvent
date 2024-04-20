@@ -4,23 +4,25 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { userNameSelector } from "../../state/auth/slice";
 import { useSelector } from "react-redux";
 import LogoutPage from "../../pages/logout";
+import { navigate } from "gatsby";
+
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const userName = useSelector(userNameSelector); // 直接获取用户名
 
   const logout = LogoutPage();
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleNavigateHome = () => {
+    navigate('/login');  // 确保路由是正确的
   };
+  
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -31,14 +33,15 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          <IconButton 
             size="large"
             edge="start"
             color="inherit"
-            aria-label="menu"
+            aria-label="go to home"
             sx={{ mr: 2 }}
+            onClick={handleNavigateHome}
           >
-            <MenuIcon />
+            <HomeIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             SG EventHub
@@ -50,7 +53,10 @@ export default function Header() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleMenu}
+              onClick={() => {
+                handleClose();
+                logout(); // 调用logout函数
+              }}
               color="inherit"
             >
               <AccountCircle />

@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
-import TextField from "@mui/material/TextField";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, TextField } from "@mui/material";
 import { useLoginMutation } from "../../services/auth.service";
 import { authSelector } from "../../state/auth/slice";
-import { navigate } from "gatsby";
 import { useSelector } from "react-redux";
+import { navigate } from "gatsby";
 
 export default function Login() {
   const [requestLogin, { isError }] = useLoginMutation();
@@ -26,46 +25,57 @@ export default function Login() {
     <Grid
       container
       spacing={2}
+      direction="column"
       justifyContent="center"
       alignItems="center"
-      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      style={{ minHeight: '45vh' }}
     >
-      <Grid item xs={12} lg={7} justifyContent="center" alignItems="center">
-        <Typography variant="h4" component="h4">
-          welcome to community event center.
+      <Grid item xs={12} sx={{ mt: 4, width: '75%' }}>
+        <Typography variant="h4" textAlign="center">
+          Welcome to Community Event Center
         </Typography>
       </Grid>
-      <Grid item xs={12} lg={7} justifyContent="center" alignItems="center">
+      <Grid item xs={12} md={8} sx={{ width: '75%', mt: 2 }}>
         <TextField
           required
           fullWidth
-          id="outlined-required"
-          label="Required"
+          label="Email Address"
+          variant="outlined"
+          value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
+          margin="normal"
         />
       </Grid>
-      <Grid item xs={12} lg={7} justifyContent="center" alignItems="center">
+      <Grid item xs={12} md={8} sx={{ width: '75%', mt: 2 }}>
         <TextField
           required
           fullWidth
-          id="outlined-required"
-          label="Required"
+          label="Password"
+          variant="outlined"
           type="password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
+          margin="normal"
         />
       </Grid>
-      <Grid item xs={12} lg={7} justifyContent="center" alignItems="center">
-        <Button variant="contained" onClick={onLogin}>
+      <Grid item xs={12} sx={{ width: '75%', mt: 3, mb: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onLogin}
+          fullWidth
+        >
           Login
         </Button>
         {isError && (
-          <Typography color="error">Login failed. Please try again.</Typography>
+          <Typography color="error" sx={{ mt: 1 }}>
+            Login failed. Please try again.
+          </Typography>
         )}
       </Grid>
-      {/* 在这里添加注册链接 */}
-      <Grid item xs={12} lg={7} justifyContent="center" alignItems="center">
-        <Typography style={{ marginTop: 20 }}>
-          Don't have SG EventHub account?
+      <Grid item xs={12} sx={{ width: '75%', mt: 2 }}>
+        <Typography textAlign="center" sx={{ mt: 2 }}>
+          Don't have an SG EventHub account?
           <span
             style={{ textDecoration: "underline", cursor: "pointer" }}
             onClick={() => navigate("/signup")}
