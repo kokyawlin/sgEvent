@@ -22,7 +22,9 @@ export default function Header() {
   const handleNavigateHome = () => {
     navigate('/login');  // 确保路由是正确的
   };
-  
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -53,10 +55,7 @@ export default function Header() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={() => {
-                handleClose();
-                logout(); // 调用logout函数
-              }}
+              onClick={handleMenu}
               color="inherit"
             >
               <AccountCircle />
