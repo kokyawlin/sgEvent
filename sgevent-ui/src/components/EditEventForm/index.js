@@ -87,7 +87,7 @@ export default function EditEventForm({
         <QuantityInput
           aria-label="Capacity"
           label="Capacity"
-          value={value.eventCapacity}
+          defaultValue={value.eventCapacity}
           min={1}
           max={1000}
           required

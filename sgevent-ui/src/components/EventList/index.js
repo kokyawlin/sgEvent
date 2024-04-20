@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useGetEventListQuery,
   useDeleteEventMutation,
@@ -7,8 +7,6 @@ import {
 import EventCard from "../EventCard";
 import Box from "@mui/material/Box";
 import { navigate } from "gatsby";
-import { authSelector } from "../../state/auth/slice";
-import { useSelector } from "react-redux";
 
 const EventList = ({ isAdmin }) => {
   const { data, error, isLoading, refetch } = useGetEventListQuery(null, {
@@ -16,6 +14,10 @@ const EventList = ({ isAdmin }) => {
   });
   const [deleteEvent, deleteResult] = useDeleteEventMutation();
   const [joinEvent, joinResult] = useRegisterEventMutation();
+
+  useEffect(() => {
+    if (joinResult.isSuccess) refetch();
+  }, [joinResult]);
 
   const onEdit = (eventId) => {
     navigate(`/events/edit?id=${eventId}`);
