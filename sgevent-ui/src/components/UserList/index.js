@@ -18,8 +18,8 @@ import { navigate } from "gatsby";
 export default function UserList() {
   const { data, error, isLoading, refetch } = useGetUserListQuery();
   const [deleteUser, result] = useDeleteUserMutation();
-  const onEditClick = (emailAddress) => {
-    navigate(`/users/edit?emailAddress=${emailAddress}`);
+  const onEditClick = (userId) => {
+    navigate(`/users/edit?userId=${userId}`);
   };
   React.useEffect(() => {
     if (result.isSuccess) refetch();
@@ -55,7 +55,7 @@ export default function UserList() {
                   color="primary"
                   aria-label="Edit User"
                   onClick={() => {
-                    onEditClick(row.emailAddress);
+                    onEditClick(row.userId);
                   }}
                 >
                   <EditIcon />

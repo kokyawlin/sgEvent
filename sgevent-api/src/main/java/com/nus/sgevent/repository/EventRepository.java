@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface EventRepository extends CrudRepository<Event, UUID> {
   @Modifying
   @Query(
-    value = "Update event set event_title=?2, event_desc=?3, event_cover=?4, event_place=?5, event_start_dt=?6, event_end_dt=?7 where event_id=?1",
+    value = "Update event set event_title=?2, event_desc=?3, event_cover=?4, event_place=?5, event_start_dt=?6, event_end_dt=?7, event_capacity=?8 where event_id=?1",
     nativeQuery = true
   )
   int UpdateEvent(
@@ -24,7 +24,8 @@ public interface EventRepository extends CrudRepository<Event, UUID> {
     String eventCover,
     String eventPlace,
     Date eventStartDt,
-    Date eventEndDt
+    Date eventEndDt,
+    int eventCapacity
   );
 
   @Query(
