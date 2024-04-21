@@ -11,6 +11,7 @@ import DeleteModal from "../DeleteModal";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import img from "../../images/img-placeholder.png";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { authSelector } from "../../state/auth/slice";
 import { useSelector } from "react-redux";
 
@@ -18,8 +19,9 @@ export default function EventCard({
   value,
   onEdit,
   onDelete,
-  onJoin,
+  onRegister,
   isAdmin,
+  isRegistering,
 }) {
   const { userInfo } = useSelector((state) => authSelector(state));
   return (
@@ -116,16 +118,31 @@ export default function EventCard({
                   />
                 </Box>
               ) : (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  disabled={value.registered}
-                  onClick={() => {
-                    onJoin({ eventId: value.eventId, userId: userInfo.userId });
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    justifyContent: "space-around",
                   }}
                 >
-                  {value.registered ? "Joined" : "Join"}
-                </Button>
+                  <LoadingButton
+                    fullWidth
+                    variant={value.registered ? "outlined" : "contained"}
+                    type="submit"
+                    loadingPosition="end"
+                    loading={isRegistering}
+                    onClick={() => {
+                      onRegister({
+                        type: value.registered ? "unregister" : "register",
+                        eventId: value.eventId,
+                        userId: userInfo.userId,
+                      });
+                    }}
+                  >
+                    {value.registered ? "Leave" : "Join"}
+                  </LoadingButton>
+                </Box>
               )}
             </Box>
           </Grid>

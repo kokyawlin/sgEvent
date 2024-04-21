@@ -159,6 +159,24 @@ public class EventController {
     }
   }
 
+  @GetMapping(path = "/unregister/{eventid}/{userid}") // Map ONLY POST Requests
+  public ResponseEntity<?> UnregisterEvent(
+    @PathVariable("eventid") String eventid,
+    @PathVariable("userid") String userid
+  ) {
+    try {
+      eventregisterRepository.deleteByIds(UUID.fromString(eventid),UUID.fromString(userid));;
+
+      return ResponseEntity.ok(
+        new JsonResponse(true, "Unregister event successful.")
+      );
+    } catch (NullPointerException ex) {
+      return ResponseEntity
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new JsonResponse(false, "Unregister event failed."));
+    }
+  }
+
   @GetMapping("/{title}")
   public ResponseEntity<?> searchEventByTitle(
     @PathVariable("title") String title
