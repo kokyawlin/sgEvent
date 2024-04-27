@@ -9,15 +9,15 @@ import Box from "@mui/material/Box";
 import { navigate } from "gatsby";
 
 const EventList = ({ isAdmin }) => {
-  const { data, error, isLoading, refetch } = useGetEventListQuery(null, {
+  const { data, error, isFetching, refetch } = useGetEventListQuery(null, {
     refetchOnMountOrArgChange: true,
   });
   const [deleteEvent, deleteResult] = useDeleteEventMutation();
-  const [joinEvent, joinResult] = useRegisterEventMutation();
+  const [registerEvent, registerResult] = useRegisterEventMutation();
 
   useEffect(() => {
-    if (joinResult.isSuccess) refetch();
-  }, [joinResult]);
+    if (deleteResult.isSuccess || registerResult.isSuccess) refetch();
+  }, [registerResult, deleteResult]);
 
   const onEdit = (eventId) => {
     navigate(`/events/edit?id=${eventId}`);
@@ -38,8 +38,13 @@ const EventList = ({ isAdmin }) => {
           onDelete={deleteEvent}
           isDeleteing={deleteResult.isLoading}
           onEdit={onEdit}
-          onJoin={joinEvent}
+          onRegister={registerEvent}
           isAdmin={isAdmin}
+          isRegistering={
+            registerResult?.originalArgs?.eventId === item.eventId
+              ? registerResult.isLoading || isFetching
+              : false
+          }
         />
       ))}
     </Box>

@@ -11,6 +11,7 @@ export default function DateTimeRangePickerInput({
   defaultEndVal,
   label,
   onChange,
+  disabled,
 }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -19,6 +20,7 @@ export default function DateTimeRangePickerInput({
       >
         <DemoItem label={label} component="DateTimeRangePicker">
           <DateTimeRangePicker
+            disabled={disabled}
             defaultValue={[dayjs(defaultStartVal), dayjs(defaultEndVal)]}
             onChange={onChange}
           />

@@ -42,8 +42,8 @@ export const eventApi = createApi({
       }),
     }),
     registerEvent: builder.mutation({
-      query: ({ eventId, userId }) => ({
-        url: `/event/register/${eventId}/${userId}`,
+      query: ({ type, eventId, userId }) => ({
+        url: `/event/${type}/${eventId}/${userId}`,
         method: "GET",
       }),
     }),

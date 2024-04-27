@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useSearchLocationMutation } from "../../services/map.service";
 import debounce from "lodash/debounce";
 
-export default function LocationSelect({ label, value, onChange }) {
+export default function LocationSelect({ label, value, onChange, disabled }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [searchLocation, result] = useSearchLocationMutation();
@@ -37,6 +37,7 @@ export default function LocationSelect({ label, value, onChange }) {
       onClose={() => {
         setOpen(false);
       }}
+      disabled={disabled}
       onInputChange={debounce(onInputChange, 500)}
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={(option) => option}
