@@ -17,7 +17,7 @@ public class SGEventApplication extends SpringBootServletInitializer {
       System.setProperty("db.username", args[0]);
       System.setProperty("db.password", args[1]);
       System.setProperty("mail.username", args[2]);
-      System.setProperty("mail.password", args[3]);
+      System.setProperty("mail.username", args[3]);
     }
 
     SpringApplication.run(SGEventApplication.class, args);

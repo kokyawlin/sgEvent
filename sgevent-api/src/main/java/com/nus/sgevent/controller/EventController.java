@@ -2,13 +2,10 @@ package com.nus.sgevent.controller;
 
 import com.nus.sgevent.entity.Event;
 import com.nus.sgevent.entity.EventRegistration;
-import com.nus.sgevent.entity.EventReview;
 import com.nus.sgevent.entity.JsonResponse;
 import com.nus.sgevent.entity.eventObj;
 import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
-import com.nus.sgevent.repository.EventReviewRepository;
-
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -31,22 +28,6 @@ public class EventController {
   @Autowired
   private EventRegisterRepository eventregisterRepository;
 
-
-
-  @GetMapping("/reviews/{eventid}")
-    public ResponseEntity<?> getEventReviews(@PathVariable("eventid") String eventid) {
-        try {
-            UUID uuid = UUID.fromString(eventid);
-            List<EventReview> reviews = EventReviewRepository.findByEventId(uuid);
-            if (reviews.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Reviews Found");
-            }
-            return ResponseEntity.ok(reviews);
-        } catch (IllegalArgumentException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Event ID Format");
-        }
-    }
-    
   @GetMapping(path = "/all")
   public @ResponseBody ResponseEntity<?> getAllEvents(
     @RequestHeader Map<String, String> header

@@ -23,11 +23,6 @@ const EventList = ({ isAdmin }) => {
     navigate(`/events/edit?id=${eventId}`);
   };
 
-  // Add the onDetails function
-  const onDetails = (eventId) => {
-    navigate(`/events/details?id=${eventId}`);
-  };
-
   return (
     <Box
       sx={{
@@ -39,13 +34,11 @@ const EventList = ({ isAdmin }) => {
     >
       {data?.map((item) => (
         <EventCard
-          key={item.eventId}  // Ensure you have a key for list items
           value={item}
           onDelete={deleteEvent}
           isDeleteing={deleteResult.isLoading}
           onEdit={onEdit}
           onJoin={joinEvent}
-          onDetails={onDetails}  // Pass onDetails as a prop
           isAdmin={isAdmin}
         />
       ))}
