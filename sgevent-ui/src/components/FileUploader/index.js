@@ -15,7 +15,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function InputFileUpload({ label, value, onChange }) {
+export default function InputFileUpload({ label, value, onChange, disabled }) {
   const [picture, setPicture] = React.useState("");
   const onUpload = (e) => {
     // setPicture(URL.createObjectURL(e.target.files[0]));
@@ -32,6 +32,7 @@ export default function InputFileUpload({ label, value, onChange }) {
         component="label"
         role={undefined}
         variant="contained"
+        disabled={disabled}
         tabIndex={-1}
         startIcon={<CloudUploadIcon />}
       >

@@ -2,12 +2,15 @@ package com.nus.sgevent.controller;
 
 import com.nus.sgevent.entity.Event;
 import com.nus.sgevent.entity.EventRegistration;
+import com.nus.sgevent.entity.EventUser;
 import com.nus.sgevent.entity.JsonResponse;
 import com.nus.sgevent.entity.eventObj;
 import com.nus.sgevent.repository.EventRegisterRepository;
 import com.nus.sgevent.repository.EventRepository;
+import com.nus.sgevent.repository.UserRepository;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class EventController {
 
   @Autowired
   private EventRepository eventRepository;
+
+  @Autowired
+  private UserRepository userRepository;
 
   @Autowired
   private EventRegisterRepository eventregisterRepository;
@@ -100,7 +106,13 @@ public class EventController {
   ) {
     try {
       UUID uuid = UUID.fromString(eventid);
-      return ResponseEntity.ok(eventRepository.findById(uuid));
+      List<EventUser> userList = queryEventUsersById(uuid);
+      Optional<Event> evt = eventRepository.findById(uuid);
+      eventObj evtDetails = new eventObj(evt.get());
+      evtDetails.setUserList(userList);
+      evtDetails.setRegistrationCount(userList.size());
+
+      return ResponseEntity.ok(evtDetails);
     } catch (NullPointerException ex) {
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
@@ -165,8 +177,10 @@ public class EventController {
     @PathVariable("userid") String userid
   ) {
     try {
-      eventregisterRepository.deleteByIds(UUID.fromString(eventid),UUID.fromString(userid));;
-
+      eventregisterRepository.deleteByIds(
+        UUID.fromString(eventid),
+        UUID.fromString(userid)
+      );
       return ResponseEntity.ok(
         new JsonResponse(true, "Unregister event successful.")
       );
@@ -189,6 +203,23 @@ public class EventController {
       // return UserFound;
     } catch (Exception ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Event Found");
+    }
+  }
+
+  private List<EventUser> queryEventUsersById(UUID eventid) {
+    try {
+      Iterable<EventRegistration> ERegList = eventregisterRepository.SearchEventRegister(
+        eventid
+      );
+      Supplier<Stream<EventRegistration>> streamEvtRegList = () ->
+        StreamSupport.stream(ERegList.spliterator(), false);
+      List<UUID> userIds = streamEvtRegList
+        .get()
+        .map(u -> u.getUserId())
+        .collect(Collectors.toList());
+      return userRepository.findByUserIds(userIds);
+    } catch (Exception ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User Found");
     }
   }
 }

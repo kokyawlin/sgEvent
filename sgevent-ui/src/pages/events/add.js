@@ -25,7 +25,7 @@ export default function AddEvent({ location }) {
     <Layout isLoading={false}>
       <AdminPageLayout title="Add New Event">
         <EditEventForm
-          isEdit={false}
+          type="add"
           value={user}
           onSubmit={onAddEvent}
           isUpdating={result.isLoading}

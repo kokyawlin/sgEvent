@@ -1,7 +1,6 @@
 package com.nus.sgevent.repository;
 import java.util.UUID;
 import com.nus.sgevent.entity.EventRegistration;
-import com.nus.sgevent.entity.EventUser;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,7 @@ public interface EventRegisterRepository
     value = "select event_registration.* from event_registration where event_id=?1",
     nativeQuery = true
   )
-  EventUser SearchEventRegister(UUID event_id);
+  Iterable<EventRegistration> SearchEventRegister(UUID event_id);
 
   @Transactional
   @Modifying

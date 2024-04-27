@@ -16,8 +16,8 @@ const EventList = ({ isAdmin }) => {
   const [registerEvent, registerResult] = useRegisterEventMutation();
 
   useEffect(() => {
-    if (registerResult.isSuccess) refetch();
-  }, [registerResult]);
+    if (deleteResult.isSuccess || registerResult.isSuccess) refetch();
+  }, [registerResult, deleteResult]);
 
   const onEdit = (eventId) => {
     navigate(`/events/edit?id=${eventId}`);

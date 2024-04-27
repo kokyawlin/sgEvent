@@ -13,13 +13,16 @@ import QuantityInput from "../QuantityInput";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import InputFileUpload from "../FileUploader";
 import LocationSelect from "../LocationSelect";
+import ChipList from "../ChipList";
 
 export default function EditEventForm({
   value,
   onSubmit,
+  onDelete,
   isUpdating,
+  isDeleting,
   isError,
-  isEdit,
+  type,
 }) {
   const [event, setEvent] = React.useState();
 
@@ -29,7 +32,7 @@ export default function EditEventForm({
 
   return event ? (
     <Box>
-      {isEdit ? (
+      {type === "edit" ? (
         <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
           <TextField
             disabled
@@ -39,11 +42,11 @@ export default function EditEventForm({
           />
         </FormControl>
       ) : null}
-
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <InputFileUpload
           value={value.eventCover}
           label="Event Cover"
+          disabled={type !== "edit" && type !== "add"}
           onChange={(value) => {
             setEvent((prev) => ({
               ...prev,
@@ -52,12 +55,12 @@ export default function EditEventForm({
           }}
         />
       </FormControl>
-
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="event-title"
           label="Title"
           value={event.eventTitle}
+          disabled={type !== "edit" && type !== "add"}
           required
           onChange={(event) => {
             setEvent((prev) => ({
@@ -67,12 +70,12 @@ export default function EditEventForm({
           }}
         />
       </FormControl>
-
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <TextField
           id="event-desc"
           label="Description"
           value={event.eventDesc}
+          disabled={type !== "edit" && type !== "add"}
           required
           onChange={(event) => {
             setEvent((prev) => ({
@@ -82,7 +85,6 @@ export default function EditEventForm({
           }}
         />
       </FormControl>
-
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <QuantityInput
           aria-label="Capacity"
@@ -91,6 +93,7 @@ export default function EditEventForm({
           min={1}
           max={1000}
           required
+          disabled={type !== "edit" && type !== "add"}
           onChange={(event, value) => {
             setEvent((prev) => ({
               ...prev,
@@ -99,12 +102,12 @@ export default function EditEventForm({
           }}
         />
       </FormControl>
-
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <DateTimeRangePicker
           label="Duration"
           defaultStartVal={event.eventStartDt}
           defaultEndVal={event.eventEndDt}
+          disabled={type !== "edit" && type !== "add"}
           onChange={(values) => {
             if (values.length !== 2) return;
             setEvent((prev) => ({
@@ -115,11 +118,11 @@ export default function EditEventForm({
           }}
         />
       </FormControl>
-
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <LocationSelect
           label="Location"
           value={value.eventPlace}
+          disabled={type !== "edit" && type !== "add"}
           onChange={(event, value) => {
             setEvent((prev) => ({
               ...prev,
@@ -128,7 +131,17 @@ export default function EditEventForm({
           }}
         />
       </FormControl>
-
+      {type === "view" ? (
+        <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
+          <FormLabel component="legend">Event Member List</FormLabel>
+          <ChipList
+            eventId={value.eventId}
+            items={value.userList}
+            onDelete={onDelete}
+            isDeleting={isDeleting}
+          />
+        </FormControl>
+      ) : null}
       <br />
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         {isError ? (
@@ -138,18 +151,20 @@ export default function EditEventForm({
           </FormLabel>
         ) : null}
         <Stack spacing={2} direction="row">
-          <LoadingButton
-            fullWidth
-            variant="contained"
-            type="submit"
-            loadingPosition="end"
-            loading={isUpdating}
-            onClick={() => {
-              onSubmit(event);
-            }}
-          >
-            Submit
-          </LoadingButton>
+          {type !== "view" ? (
+            <LoadingButton
+              fullWidth
+              variant="contained"
+              type="submit"
+              loadingPosition="end"
+              loading={isUpdating}
+              onClick={() => {
+                onSubmit(event);
+              }}
+            >
+              Submit
+            </LoadingButton>
+          ) : null}
           <Button
             fullWidth
             variant="outlined"
@@ -157,7 +172,7 @@ export default function EditEventForm({
               navigate("/events");
             }}
           >
-            Back
+            Back to Event Home
           </Button>
         </Stack>
       </FormControl>
