@@ -15,12 +15,23 @@ export const eventApi = createApi({
         method: "GET",
       }),
     }),
+    
+    // 正确
     getEventDetails: builder.query({
       query: (id) => ({
-        url: `/event/details/${id}`,
+        url: `/event/details?eventid=${id}`,
         method: "GET",
       }),
     }),
+    
+
+    // getEventForEdit: builder.query({
+    //   query: (id) => ({
+    //     url: `/event/edit/${id}`,
+    //     method: "GET",
+    //   }),
+    // }),
+    
     addEvent: builder.mutation({
       query: (payload) => ({
         url: `/event/create`,

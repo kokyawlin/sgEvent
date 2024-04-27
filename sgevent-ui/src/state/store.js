@@ -6,6 +6,8 @@ import { userApi, userReducerName } from "../services/user.service";
 import { roleApi, roleReducerName } from "../services/role.service";
 import { eventApi, eventReducerName } from "../services/event.service";
 import { mapApi, mapReducerName } from "../services/map.service";
+import { reviewApi, reviewReducerName } from "../services/review.service";
+
 import {
   persistStore,
   persistReducer,
@@ -31,6 +33,7 @@ const rootReducer = combineReducers({
   [roleReducerName]: roleApi.reducer,
   [eventReducerName]: eventApi.reducer,
   [mapReducerName]: mapApi.reducer,
+  [reviewReducerName]: reviewApi.reducer, // 添加 reviewReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -48,6 +51,7 @@ const store = configureStore({
     roleApi.middleware,
     eventApi.middleware,
     mapApi.middleware,
+    reviewApi.middleware, // 添加 reviewApi.middleware
   ],
 });
 

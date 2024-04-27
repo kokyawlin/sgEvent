@@ -14,12 +14,14 @@ import img from "../../images/img-placeholder.png";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { authSelector } from "../../state/auth/slice";
 import { useSelector } from "react-redux";
+import { navigate } from "gatsby"; // 导入 navigate 函数
 
 export default function EventCard({
   value,
   onEdit,
   onDelete,
   onRegister,
+  onDetails, // 添加 onDetails 函数
   isAdmin,
   isRegistering,
 }) {
@@ -128,20 +130,29 @@ export default function EventCard({
                 >
                   <LoadingButton
                     fullWidth
-                    variant={value.registered ? "outlined" : "contained"}
+                    variant={value?.registered ? "outlined" : "contained"}
                     type="submit"
                     loadingPosition="end"
                     loading={isRegistering}
                     onClick={() => {
                       onRegister({
-                        type: value.registered ? "unregister" : "register",
+                        type: value?.registered ? "unregister" : "register",
                         eventId: value.eventId,
                         userId: userInfo.userId,
                       });
                     }}
                   >
-                    {value.registered ? "Leave" : "Join"}
+                    {value?.registered ? "Leave" : "Join"}
                   </LoadingButton>
+
+                  <LoadingButton 
+                    variant="outlined" 
+                    onClick={() => {
+                      onDetails(value.eventId);  // 修改这里，直接传递 eventId
+                      }}>
+                    Details
+                  </LoadingButton>
+
                 </Box>
               )}
             </Box>

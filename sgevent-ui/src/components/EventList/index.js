@@ -19,9 +19,17 @@ const EventList = ({ isAdmin }) => {
     if (deleteResult.isSuccess || registerResult.isSuccess) refetch();
   }, [registerResult, deleteResult]);
 
+  //正确
   const onEdit = (eventId) => {
     navigate(`/events/edit?id=${eventId}`);
   };
+  
+
+   //正确
+  const onDetails = (eventId) => {
+    navigate(`/events/details?${eventId}`);
+  };
+  
 
   return (
     <Box
@@ -34,12 +42,14 @@ const EventList = ({ isAdmin }) => {
     >
       {data?.map((item) => (
         <EventCard
+          key={item.eventId} // 添加 key 属性
           value={item}
           onDelete={deleteEvent}
-          isDeleteing={deleteResult.isLoading}
+          isDeleting={deleteResult.isLoading}  // 修正属性名
           onEdit={onEdit}
           onRegister={registerEvent}
           isAdmin={isAdmin}
+          onDetails={onDetails} 
           isRegistering={
             registerResult?.originalArgs?.eventId === item.eventId
               ? registerResult.isLoading || isFetching

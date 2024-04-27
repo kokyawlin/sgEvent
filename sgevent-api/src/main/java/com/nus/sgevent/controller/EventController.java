@@ -94,25 +94,27 @@ public class EventController {
     );
   }
 
-  @GetMapping("/details/{eventid}")
-  public ResponseEntity<?> retrieveEventDetails(
-    @PathVariable("eventid") String eventid
-  ) {
-    try {
-      UUID uuid = UUID.fromString(eventid);
-      List<EventUser> userList = queryEventUsersById(uuid);
-      Optional<Event> evt = eventRepository.findById(uuid);
-      eventObj evtDetails = new eventObj(evt.get());
-      evtDetails.setUserList(userList);
-      evtDetails.setRegistrationCount(userList.size());
 
-      return ResponseEntity.ok(evtDetails);
-    } catch (NullPointerException ex) {
-      throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        "Event Not Found!"
-      );
-    }
+
+  @GetMapping("/details")
+  public ResponseEntity<?> retrieveEventDetails(
+    @RequestParam("eventid") String eventid
+  ) {
+      try {
+          UUID uuid = UUID.fromString(eventid);
+          List<EventUser> userList = queryEventUsersById(uuid);
+          Optional<Event> evt = eventRepository.findById(uuid);
+          eventObj evtDetails = new eventObj(evt.get());
+          evtDetails.setUserList(userList);
+          evtDetails.setRegistrationCount(userList.size());
+
+          return ResponseEntity.ok(evtDetails);
+      } catch (NullPointerException ex) {
+          throw new ResponseStatusException(
+              HttpStatus.NOT_FOUND,
+              "Event Not Found!"
+          );
+      }
   }
 
   @PostMapping(path = "/update") // Map ONLY POST Requests

@@ -38,5 +38,5 @@ public interface EventRepository extends CrudRepository<Event, UUID> {
     value = "select event.* from event where event_id=?1",
     nativeQuery = true
   )
-  Event QueryEventById(String event_id);
+  Event QueryEventById(UUID event_id);
 }
