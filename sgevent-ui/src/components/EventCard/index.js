@@ -19,6 +19,7 @@ export default function EventCard({
   onEdit,
   onDelete,
   onJoin,
+  onDetails,
   isAdmin,
 }) {
   const { userInfo } = useSelector((state) => authSelector(state));
@@ -116,16 +117,21 @@ export default function EventCard({
                   />
                 </Box>
               ) : (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  disabled={value.registered}
-                  onClick={() => {
-                    onJoin({ eventId: value.eventId, userId: userInfo.userId });
-                  }}
-                >
-                  {value.registered ? "Joined" : "Join"}
-                </Button>
+                <Box>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    disabled={value.registered}
+                    onClick={() => {
+                      onJoin({ eventId: value.eventId, userId: userInfo.userId });
+                    }}
+                  >
+                    {value.registered ? "Joined" : "Join"}
+                  </Button>
+                  <Button variant="outlined" onClick={() => onDetails(value.eventId)}>
+                    Details
+                  </Button>
+                </Box>
               )}
             </Box>
           </Grid>
