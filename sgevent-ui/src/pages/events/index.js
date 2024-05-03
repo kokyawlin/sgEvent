@@ -13,7 +13,7 @@ export default function EventPage() {
   const onAddClick = () => {
     navigate("/events/add");
   };
-  const isAdmin = userInfo.roleId === 2;
+  const isAdmin = userInfo.roleId === 2 || userInfo.roleId === 3;
   return (
     <Layout>
       <AdminPageLayout

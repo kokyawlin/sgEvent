@@ -22,6 +22,7 @@ export default function InputFileUpload({ label, value, onChange, disabled }) {
     toBase64(e.target.files[0], (value) => {
       onChange(value);
     });
+    e.target.value = null;
   };
   React.useEffect(() => {
     setPicture(value);

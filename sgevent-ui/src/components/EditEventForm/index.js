@@ -23,6 +23,7 @@ export default function EditEventForm({
   isDeleting,
   isError,
   type,
+  isChipDisabled = false,
 }) {
   const [event, setEvent] = React.useState();
 
@@ -44,7 +45,7 @@ export default function EditEventForm({
       ) : null}
       <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
         <InputFileUpload
-          value={value.eventCover}
+          value={event.eventCover}
           label="Event Cover"
           disabled={type !== "edit" && type !== "add"}
           onChange={(value) => {
@@ -135,6 +136,7 @@ export default function EditEventForm({
         <FormControl sx={{ width: 1 / 2, mb: 2, mr: 2 }} variant="standard">
           <FormLabel component="legend">Event Member List</FormLabel>
           <ChipList
+            disabled={isChipDisabled}
             eventId={value.eventId}
             items={value.userList}
             onDelete={onDelete}
@@ -150,10 +152,10 @@ export default function EditEventForm({
             later.
           </FormLabel>
         ) : null}
-          <br />
-          <br />
-          <br />
-          <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <Stack spacing={2} direction="row">
           {type !== "view" ? (
             <LoadingButton
