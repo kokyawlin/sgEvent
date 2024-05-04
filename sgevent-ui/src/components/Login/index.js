@@ -80,6 +80,7 @@ export default function Login() {
             style={{ textDecoration: "underline", cursor: "pointer" }}
             onClick={() => navigate("/signup")}
           >
+            Sign Up now
           </span>
         </Typography>
       </Grid>
