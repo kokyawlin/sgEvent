@@ -80,9 +80,7 @@ export default function Login() {
             style={{ textDecoration: "underline", cursor: "pointer" }}
             onClick={() => navigate("/signup")}
           >
-            Sign Up now This is CICD
           </span>
-          This is CICD demo
         </Typography>
       </Grid>
     </Grid>
